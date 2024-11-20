@@ -1,0 +1,48 @@
+/* General container for the page */
+.es {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  /* Section for location selection */
+  .es h3 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  .es .dropdown {
+    display: block;
+    margin: 10px auto; /* Centers the dropdowns */
+    padding: 8px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80%; /* Adjust width as needed */
+    max-width: 300px; /* Prevent it from getting too wide */
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transition: border 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .es .dropdown:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .es .dropdown:focus {
+    border: 1px solid #007BFF;
+  }
+  
+  /* Selected country and region information */
+  .es p {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .es p strong {
+    color: #007BFF;
+  }
+  

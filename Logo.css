@@ -1,0 +1,39 @@
+/* Logo and Login Section */
+.logo-login-container {
+  display: flex;
+  justify-content: space-between; /* Logo on the left, Login on the right */
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ffffff; /* Black background */
+  border: 2px solid rgb(255, 255, 255); /* Add a black border */
+  border-left: none; /* No border on the left */
+  border-right: none; /* No border on the right */
+  border-bottom: none; /* No border on the bottom */
+}
+
+.logo-image {
+  height: 85px; /* Adjust the size of the logo */
+  object-fit: contain; /* Ensures the logo scales properly */
+}
+
+.logo-login-container .nav-link {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  padding: 0.5em;
+  transition: color 0.3s;
+}
+
+.login .login-link {
+  color: rgb(0, 0, 0); /* Text color for the login link */
+  text-decoration: none;
+  font-size: 18px; /* Font size for the login link */
+  font-weight: bold;
+  padding: 5px 10px; /* Adds spacing around the link */
+  border: 1px solid transparent; /* Adds an invisible border for better hover effects */
+  transition: color 0.3s ease, border-color 0.3s ease; /* Smooth hover animation */
+}
+
+.login .login-link:hover {
+  color: #04AA6D; /* Change color on hover */
+  border-color: #04AA6D; /* Add a green border on hover */
+}

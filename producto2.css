@@ -1,0 +1,50 @@
+/* General layout for cards */
+.cards {
+    display: flex;
+    flex-wrap: wrap; /* Wrap to the next row if cards exceed the container width */
+    gap: 16px; /* Space between cards */
+    justify-content: center; /* Center the cards */
+    padding: 16px;
+  }
+  
+  /* Card styles */
+  .card {
+    width: 200px; /* Set a fixed width for all cards */
+    height: 300px; /* Set a fixed height for all cards */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center; /* Center text inside */
+    overflow: hidden; /* Ensure content stays inside the card */
+    transition: transform 0.3s ease; /* Smooth scale effect */
+  }
+  
+  /* Card hover effect */
+  .card:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+  }
+  
+  /* Image inside the card */
+  .card-content img {
+    width: 100%; /* Make the image span the full width of the card */
+    height: 150px; /* Fixed height for images */
+    object-fit: cover; /* Ensure the image scales nicely */
+    border-bottom: 1px solid #ccc; /* Divider between image and content */
+  }
+  
+  /* Card text */
+  .card-content p {
+    margin: 8px 0; /* Spacing around text */
+    font-size: 16px; /* Readable font size */
+    color: #333; /* Dark text color */
+  }
+  
+  /* Headings for card types */
+  .card h2 {
+    font-size: 18px;
+    margin: 12px 0;
+    color: #555; /* Subtle heading color */
+  }
+  

@@ -12,7 +12,7 @@
 }
 
 .logo-image {
-  height: 85px; /* Adjust the size of the logo */
+  height: 70px; /* Adjust the size of the logo */
   object-fit: contain; /* Ensures the logo scales properly */
 }
 
@@ -26,7 +26,7 @@
 .login .login-link {
   color: rgb(0, 0, 0); /* Text color for the login link */
   text-decoration: none;
-  font-size: 18px; /* Font size for the login link */
+  font-size: 50px; /* Font size for the login link */
   font-weight: bold;
   padding: 5px 10px; /* Adds spacing around the link */
   border: 1px solid transparent; /* Adds an invisible border for better hover effects */

@@ -16,7 +16,7 @@ function Logo() {
         </Link>
       </div>
       <NavLink to={token ? "/profile" : "/SignUp"} className="nav-link" activeClassName="active">
-        <i className="fa fa-fw fa-user"></i> {token ? "Profile" : "SignUp"}
+        <i className="fa fa-fw fa-user"></i> {token ? "Perfil" : "Registrarse"}
       </NavLink>
     </div>
   );

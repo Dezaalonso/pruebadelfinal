@@ -10,13 +10,13 @@ function TopBar() {
     <div className="navbar">
       {/* Home Link */}
       <NavLink to="/" className="nav-link" activeClassName="active">
-        <i className="fa fa-fw fa-home"></i> Home
+        <i className="fa fa-fw fa-home"></i> Inicio
       </NavLink>
 
       {/* Dropdown Menu */}
       <div className="dropdown">
         <button className="dropbtn">
-          <i className="fa fa-caret-down"></i> Search
+          <i className="fa fa-caret-down"></i> Buscar
         </button>
         <div className="dropdown-content">
           <NavLink to="/search/repuestos" className="nav-link" activeClassName="active">
@@ -29,18 +29,22 @@ function TopBar() {
       </div>
 
       {/* Contact Link */}
+      <NavLink to="/nosotros" className="nav-link" activeClassName="active">
+        <i class="fa fa-users" aria-hidden="true"></i> Nosotros 
+      </NavLink>
+
       <NavLink to="/contact" className="nav-link" activeClassName="active">
-        <i className="fa fa-fw fa-envelope"></i> Contact
+        <i className="fa fa-fw fa-envelope"></i> Contactanos 
       </NavLink>
 
       {/* Conditional Links for Logged-in Users */}
       {token ? (
         <NavLink to="/profile" className="nav-link" activeClassName="active">
-          <i className="fa fa-fw fa-user"></i> Profile
+          <i className="fa fa-fw fa-user"></i> Perfil
         </NavLink>
       ) : (
         <NavLink to="/SignUp" className="nav-link" activeClassName="active">
-          <i className="fa fa-fw fa-sign-in"></i> Login
+          <i className="fa fa-fw fa-sign-in"></i> Registrarse
         </NavLink>
       )}
 

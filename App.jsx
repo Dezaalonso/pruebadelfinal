@@ -12,6 +12,7 @@ import EndBar from './EndBar';
 import ProductoDetalle from './ProductoDetalle';
 import SignUp from './Signup';
 import Datos from './Datos'
+import Nosotros from './Nosotros'
 import Cart from './Cart'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/SignUp/Datos" element={<Datos />} />
       </Routes>
       <EndBar />

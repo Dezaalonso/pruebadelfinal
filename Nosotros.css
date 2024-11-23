@@ -1,0 +1,84 @@
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  * {
+    box-sizing: border-box; /* Ensure padding doesn't affect total dimensions */
+  }
+.no {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  
+  .top-bar {
+    
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .top-bar .link {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .top-bar .link:hover {
+    color: #ffd700;
+  }
+  
+  .section {
+    padding: 30px 0;
+  }
+  
+  .section h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .section-with-image {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 60%;
+    height: auto;
+    margin: 0 auto; /* Centers the section horizontally */
+    max-width: 1200px; /* Sets a maximum width for better responsiveness */
+    padding: 20px; /* Adds spacing around the content */
+    box-sizing: border-box; /* Ensures padding doesn't increase width */
+}
+
+  
+  .section-with-image .text-content {
+    flex: 1; /* Ensures text takes up equal space with the image */
+  }
+  
+  .section-with-image .image-content {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .section-with-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section p {
+    margin-bottom: 15px;
+    color: #555;
+  }
+
+

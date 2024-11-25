@@ -1,5 +1,5 @@
 import React from "react";
-import "./TopBar.css";
+import "./css/TopBar.css";
 import "font-awesome/css/font-awesome.min.css";
 import { NavLink } from "react-router-dom";
 
@@ -19,10 +19,10 @@ function TopBar() {
           <i className="fa fa-caret-down"></i> Buscar
         </button>
         <div className="dropdown-content">
-          <NavLink to="/search/repuestos" className="nav-link" activeClassName="active">
+          <NavLink to="/repuestos" className="nav-link" activeClassName="active">
             Repuestos
           </NavLink>
-          <NavLink to="/search/maquinaria" className="nav-link" activeClassName="active">
+          <NavLink to="/maquinaria" className="nav-link" activeClassName="active">
             Maquinas y Motores
           </NavLink>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import './ProductoDetalle.css'; // Add a new CSS file for styling
+import './css/ProductoDetalle.css'; // Add a new CSS file for styling
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';

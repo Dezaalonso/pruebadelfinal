@@ -23,13 +23,13 @@ const EndBar = () => {
                 <i className="fa fa-twitter" aria-hidden="true"></i>
             </a>
             <a
-                href="https://pe.linkedin.com/company/peru-tractor"
+                href="https://wa.me/+51976450153"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="nav-link"
                 style={{ fontSize: '2rem', margin: '0.5rem' }} // Custom styling for size and spacing
             >
-                <i className="fa fa-linkedin" aria-hidden="true"></i>
+                <i className="fa fa-whatsapp" aria-hidden="true"></i>
             </a>
             <a
                 href="https://www.youtube.com/channel/UC8cNOBTBV7G57gJpBpfamSw"

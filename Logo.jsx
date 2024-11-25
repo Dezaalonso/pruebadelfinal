@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-import "./Logo.css";
+import "./css/Logo.css";
 import 'font-awesome/css/font-awesome.min.css';
 import logo from './resources/blanco.jpg'; // Your logo path
 

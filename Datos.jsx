@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
-import "./Datos.css";
+import "./css/Datos.css";
 
 function DataPage() {
   const location = useLocation();

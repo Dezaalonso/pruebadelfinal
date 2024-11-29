@@ -69,18 +69,19 @@ html, body {
 }
 
 /* Carro styles */
-.carro {
+.navbar .carro {
   margin-left: auto; /* Pushes this item to the far right */
   display: flex; /* Ensures horizontal alignment */
   align-items: center; /* Vertically aligns the icon */
 }
 
-.carro .fa-shopping-cart {
+.carro .cart-icon {
   color: white;
-  font-size: 1.5em;
+  font-size: 1.0em;
   transition: color 0.3s;
 }
 
-.carro .fa-shopping-cart:hover {
+.carro .cart-icon:hover {
   color: #f90;
 }
+

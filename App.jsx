@@ -10,16 +10,31 @@ import Producto2 from './producto2';
 import EndBar from './EndBar';
 import ProductoDetalle from './ProductoDetalle';
 import SignUp from './Signup';
-import Datos from './Datos'
-import Nosotros from './Nosotros'
-import Cart from './Cart'
+import Datos from './Datos';
+import Nosotros from './Nosotros';
 import Profile from './profile';
+import ShoppingCartDrawer from './ShoppingCartDrawer'; // Import the drawer
+import { useShoppingCart } from './ShoppingCartContext'; // Import the cart context
+import IconButton from '@mui/material/IconButton';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 function App() {
+  const { toggleDrawer } = useShoppingCart(); // Access the toggle function from context
+
   return (
     <BrowserRouter>
+      {/* Logo at the top */}
       <Logo />
+
+      {/* Top bar (navigation, etc.) */}
       <TopBar />
+
+      {/* Cart Icon for the Drawer */}
+
+      {/* Shopping Cart Drawer */}
+      <ShoppingCartDrawer />
+
+      {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/repuestos" element={<Producto1 />} />
@@ -27,11 +42,12 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/producto/:tipo" element={<ProductoDetalle />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/Cart" element={<Cart />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/SignUp/Datos" element={<Datos />} />
       </Routes>
+
+      {/* Footer */}
       <EndBar />
     </BrowserRouter>
   );

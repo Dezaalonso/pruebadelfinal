@@ -2,9 +2,14 @@ import React from "react";
 import "./css/TopBar.css";
 import "font-awesome/css/font-awesome.min.css";
 import { NavLink } from "react-router-dom";
+import { useShoppingCart } from "./ShoppingCartContext"; // Import the cart context
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 function TopBar() {
   const token = localStorage.getItem("token");
+  const { cart, toggleDrawer } = useShoppingCart(); // Access cart and drawer toggle
 
   return (
     <div className="navbar">
@@ -28,13 +33,13 @@ function TopBar() {
         </div>
       </div>
 
-      {/* Contact Link */}
+      {/* Contact Links */}
       <NavLink to="/nosotros" className="nav-link" activeClassName="active">
-        <i class="fa fa-users" aria-hidden="true"></i> Nosotros 
+        <i className="fa fa-users" aria-hidden="true"></i> Nosotros
       </NavLink>
 
       <NavLink to="/contact" className="nav-link" activeClassName="active">
-        <i className="fa fa-fw fa-envelope"></i> Contactanos 
+        <i className="fa fa-fw fa-envelope"></i> Contactanos
       </NavLink>
 
       {/* Conditional Links for Logged-in Users */}
@@ -48,10 +53,13 @@ function TopBar() {
         </NavLink>
       )}
 
+      {/* Cart Icon with Drawer */}
       <div className="carro">
-        <NavLink to="/Cart" className="nav-link" activeClassName="active">
-        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-        </NavLink>
+        <IconButton onClick={() => toggleDrawer(true)}>
+          <Badge badgeContent={cart.length} color="secondary">
+            <ShoppingCartIcon className="cart-icon" />
+          </Badge>
+        </IconButton>
       </div>
     </div>
   );

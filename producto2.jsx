@@ -11,7 +11,7 @@
           tipo: "Motor",
           datos: {
             nombre: "rxk mama",
-            imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgfsIuV9BPkBr2zvk3NxPjr2dm2aWMwzZKfg&s",
+            imagen: "https://drive.google.com/file/d/1gR4xxxOUdX1Yt7UvLYeEuACZJiGsfNhj/view?usp=sharing",
             descripcion: "Descripcion del motor",
             precio: 2222222
           }

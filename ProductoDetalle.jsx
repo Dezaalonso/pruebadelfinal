@@ -1,30 +1,31 @@
 import React, { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import './css/ProductoDetalle.css'; // Add a new CSS file for styling
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import { useShoppingCart } from "./ShoppingCartContext"; // Import the context
+import "./css/ProductoDetalle.css";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
 
 const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  borderRadius: '10px',
+  borderRadius: "10px",
 };
 
 function ProductoDetalle() {
   const { tipo } = useParams();
   const location = useLocation();
-  const { products } = location.state || {}; // Access all products passed via state
+  const { products } = location.state || {};
+  const { addToCart } = useShoppingCart(); // Access addToCart function
 
-  // Modal state
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -50,12 +51,28 @@ function ProductoDetalle() {
           <div
             key={index}
             className="product-detail-card"
-            onClick={() => handleOpen(product)} // Open modal on card click
           >
             <h2>{product.nombre}</h2>
-            <img src={product.imagen} alt={product.descripcion} className="product-image" />
+            <img
+              src={product.imagen}
+              alt={product.descripcion}
+              className="product-image"
+            />
             <p>{product.descripcion}</p>
             <p>Precio: {product.precio}</p>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => addToCart(product)} // Add product to cart
+            >
+              Añadir al carro
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => handleOpen(product)} // Open modal
+            >
+              Ver detalles
+            </Button>
           </div>
         ))}
       </div>

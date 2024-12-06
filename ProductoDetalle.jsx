@@ -58,7 +58,7 @@ function ProductoDetalle() {
               alt={product.descripcion}
               className="product-image"
             />
-            <p>{product.descripcion}</p>
+            
             <p>Precio: {product.precio}</p>
             <Button
               variant="contained"

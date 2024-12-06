@@ -18,20 +18,9 @@ function TopBar() {
         <i className="fa fa-fw fa-home"></i> Inicio
       </NavLink>
 
-      {/* Dropdown Menu */}
-      <div className="dropdown">
-        <button className="dropbtn">
-          <i className="fa fa-caret-down"></i> Buscar
-        </button>
-        <div className="dropdown-content">
-          <NavLink to="/repuestos" className="nav-link" activeClassName="active">
-            Repuestos
+      <NavLink to="/maquinaria" className="nav-link" activeClassName="active">
+      <i class="fa fa-wrench" aria-hidden="true"></i> Repuestos
           </NavLink>
-          <NavLink to="/maquinaria" className="nav-link" activeClassName="active">
-            Maquinas y Motores
-          </NavLink>
-        </div>
-      </div>
 
       {/* Contact Links */}
       <NavLink to="/nosotros" className="nav-link" activeClassName="active">

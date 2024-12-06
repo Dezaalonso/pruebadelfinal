@@ -27,6 +27,7 @@ function Nosotros() {
       {/* Section 1: About Us */}
       <div id="section1" className="section section-with-image">
         <div className="text-content1">
+          <h3>-----</h3>
           <h2>QUIENES SOMOS</h2>
           <p>
             Peru Tractor SRL, una empresa fundada en 1995 con capital

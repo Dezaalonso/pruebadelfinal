@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./css/Signup.css";
 import axios from "axios";
+import validator from 'validator';
 
 function SignUp() {
   // State for form data
@@ -9,6 +10,25 @@ function SignUp() {
     username: "",
     password: ""
   });
+  
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const validate = (value) => { 
+    if (validator.isStrongPassword(value, { 
+        minLength: 8, minLowercase: 1, 
+        minUppercase: 1, minNumbers: 1, minSymbols: 0
+    })) { 
+        setErrorMessage(''); // Clear error message if password is strong
+        setIsPasswordValid(true);
+        return true; // Password is strong
+    } else { 
+        setErrorMessage('Minimo: 1 Mayuscula, 1 numero '); 
+        setIsPasswordValid(false);
+        return false; // Password is not strong
+    } 
+  }; 
 
   const navigate = useNavigate();
 
@@ -19,8 +39,10 @@ function SignUp() {
 
     if (emailRegex.test(formData.username)) {
       feedbackElement.textContent = ""; // Email is valid
+      setIsEmailValid(true);
     } else {
       feedbackElement.textContent = "Please enter a valid email address.";
+      setIsEmailValid(false);
     }
   };
 
@@ -35,16 +57,20 @@ function SignUp() {
 
   // Navigate to new page and pass data
   const goToNewPage = () => {
-    if (formData.username && formData.password) {
+    if (isEmailValid && isPasswordValid) {
       navigate("/SignUp/Datos", { state: formData });
     } else {
-      alert("Please fill in all fields before continuing.");
+      alert("Please fill in all fields correctly before continuing.");
     }
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validate(formData.password)) {
+      alert("Please enter a strong password."); // Alert if password is not strong
+      return;
+    }
     try {
       const response = await axios.post("/api/signup", formData); // Replace with your API endpoint
       console.log("Sign-up successful:", response.data);
@@ -80,9 +106,11 @@ function SignUp() {
             autoComplete="current-password"
             value={formData.password}
             onChange={handleChange}
+            onBlur={(e) => validate(e.target.value)}
           />
+          <div className="error-message">{errorMessage}</div> {/* Display error message */}
 
-          <button type="button" onClick={goToNewPage} className="btn">
+          <button type="button" onClick={goToNewPage} className="btn" disabled={!isEmailValid || !isPasswordValid}>
             Registrarse
           </button>
         </form>

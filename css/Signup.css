@@ -16,6 +16,12 @@
     max-width: 400px;
   }
 
+  .alert {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+
   .feedback {
     color: red;
     font-size: 0.9em;

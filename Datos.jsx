@@ -7,7 +7,7 @@ function DataPage() {
   const location = useLocation();
   const formData = location.state;
 
-  // State for country and region
+  // State for form fields
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [name, setName] = useState("");
@@ -17,7 +17,7 @@ function DataPage() {
 
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -32,17 +32,43 @@ function DataPage() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Proceed with form submission
-      alert("Form submitted successfully!");
+      const payload = {
+        name,
+        ruc,
+        address,
+        phone,
+        country,
+        region,
+        email: formData?.username,
+        password: formData?.password,
+      };
+
+      try {
+        const response = await fetch("http://127.0.0.1:5001/correo", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          alert("Form submitted successfully!");
+          console.log("Server Response:", data);
+        } else {
+          const errorData = await response.json();
+          alert("Failed to submit form. " + errorData.message);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("An error occurred while submitting the form.");
+      }
     }
   };
 
   return (
     <div className="es">
-      <h2>Data Page</h2>
-      <p>Email: {formData?.username}</p>
-      <p>Password: {formData?.password}</p>
-
       <h3>Informacion Adicional</h3>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Nombre o Empresa: </label>
@@ -65,7 +91,7 @@ function DataPage() {
         />
         {errors.ruc && <p className="error">{errors.ruc}</p>}
 
-        <label htmlFor="ruc">Pais: </label>
+        <label htmlFor="country">Pais: </label>
         <div>
           <CountryDropdown
             value={country}
@@ -104,13 +130,6 @@ function DataPage() {
 
         <button type="submit">Submit</button>
       </form>
-
-      <p>
-        Escoge su pais de origen: <strong>{country}</strong>
-      </p>
-      <p>
-        Escoja su region: <strong>{region}</strong>
-      </p>
     </div>
   );
 }

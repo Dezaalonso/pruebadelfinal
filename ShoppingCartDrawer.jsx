@@ -16,10 +16,10 @@ function ShoppingCartDrawer() {
     >
       <div style={{ width: 300, padding: 16 }}>
         <Typography variant="h6" style={{ marginBottom: 16 }}>
-          Shopping Cart
+          Tus compras
         </Typography>
         {cart.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <p>esta vacio.</p>
         ) : (
           cart.map((product, index) => (
             <div
@@ -45,7 +45,7 @@ function ShoppingCartDrawer() {
                 color="secondary"
                 onClick={() => removeFromCart(index)}
               >
-                Remove
+                Remover
               </Button>
             </div>
           ))
@@ -56,7 +56,7 @@ function ShoppingCartDrawer() {
           onClick={() => toggleDrawer(false)}
           style={{ marginTop: 16 }}
         >
-          Close Cart
+          Cerrar
         </Button>
       </div>
     </Drawer>

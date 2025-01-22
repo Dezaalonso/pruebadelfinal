@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   background-size: cover;
-  height: 350px;
+  height: 300px;
 }
 
 .each-slide-effect span {
@@ -12,6 +12,60 @@
   font-size: 20px;
   background: #efefef;
   text-align: center;
+}
+
+.tractors-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.tractors-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.tractor-card {
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.tractor-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* Ensures images are cropped to fit */
+}
+
+.tractor-name {
+  margin: 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.tractor-price {
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.navigate-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navigate-button:hover {
+  background-color: #0056b3;
 }
 
 .video-container {

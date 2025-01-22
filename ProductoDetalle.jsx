@@ -54,7 +54,7 @@ function ProductoDetalle() {
           >
             <h2>{product.nombre}</h2>
             <img
-              src={product.imagen}
+              src={`/tractores/${product.imagen}`}
               alt={product.descripcion}
               className="product-image"
             />
@@ -91,8 +91,7 @@ function ProductoDetalle() {
                 {selectedProduct.nombre}
               </Typography>
               <img
-                src={selectedProduct.imagen}
-                alt={selectedProduct.descripcion}
+                src={`/tractores/${selectedProduct.imagen}`}
                 style={{ maxWidth: "100%", borderRadius: "10px", marginTop: "10px" }}
               />
               <Typography id="modal-description" sx={{ mt: 2 }}>

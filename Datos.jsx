@@ -23,19 +23,23 @@ function DataPage() {
 
     // Validate required fields
     if (!name.trim()) newErrors.name = "Name or Company is required.";
-    if (!ruc.trim()) newErrors.ruc = "RUC is required.";
     if (!address.trim()) newErrors.address = "Address is required.";
     if (!phone.trim()) newErrors.phone = "Phone is required.";
     if (!country) newErrors.country = "Country is required.";
     if (!region) newErrors.region = "Region is required.";
+
+    // Validate RUC only if the country is Peru
+    if (country === "Peru" && !ruc.trim()) {
+      newErrors.ruc = "RUC is required.";
+    }
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
       const payload = {
         name,
-        ruc,
         address,
+        ruc: country === "Peru" ? ruc : null, // Only include RUC if the country is Peru
         phone,
         country,
         region,
@@ -81,16 +85,6 @@ function DataPage() {
         />
         {errors.name && <p className="error">{errors.name}</p>}
 
-        <label htmlFor="ruc">Ruc: </label>
-        <input
-          name="ruc"
-          id="ruc"
-          value={ruc}
-          onChange={(e) => setRuc(e.target.value)}
-          placeholder="0000000000"
-        />
-        {errors.ruc && <p className="error">{errors.ruc}</p>}
-
         <label htmlFor="country">Pais: </label>
         <div>
           <CountryDropdown
@@ -107,6 +101,20 @@ function DataPage() {
           />
           {errors.region && <p className="error">{errors.region}</p>}
         </div>
+
+        {country === "Peru" && ( // Show RUC field only if the country is Peru
+          <>
+            <label htmlFor="ruc">Ruc: </label>
+            <input
+              name="ruc"
+              id="ruc"
+              value={ruc}
+              onChange={(e) => setRuc(e.target.value)}
+              placeholder="0000000000"
+            />
+            {errors.ruc && <p className="error">{errors.ruc}</p>}
+          </>
+        )}
 
         <label htmlFor="address">Direccion: </label>
         <input

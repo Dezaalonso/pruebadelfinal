@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./css/Nosotros.css";
 
 function Nosotros() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const handleScroll = (id) => {
     const section = document.getElementById(id);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    const apiUrl = "http://127.0.0.1:5001/data";
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setContent(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="no">
@@ -28,26 +61,12 @@ function Nosotros() {
       <div id="section1" className="section section-with-image">
         <div className="text-content1">
           <h3>-----</h3>
-          <h2>QUIENES SOMOS</h2>
-          <p>
-            Peru Tractor SRL, una empresa fundada en 1995 con capital
-            estrictamente peruano, para ofrecer atención personalizada a cada
-            cliente.
-          </p>
-          <p>
-            Empresa dedicada a la venta de repuestos, maquinaria pesada usada,
-            también alquilamos y reparamos. Tenemos un stock permanente de la
-            línea Caterpillar®.
-          </p>
-          <p>
-            Actualmente está consolidado como líder del sector, es reconocida
-            como una TOP "Mejores empresas del Perú", ganadora de premios como
-            la empresa peruana del año según estudios de opinión y Mercado.
-          </p>
+          <h2>{content.aboutUs.title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: content.aboutUs.paragraphs }} />
         </div>
         <div className="image-content">
           <img
-            src="https://perutractor.com/img-productos/secciones/nosotros.jpg"
+            src={`/secciones/${content.aboutUs.image}`}
             alt="About Us"
           />
         </div>
@@ -57,16 +76,12 @@ function Nosotros() {
       {/* Section 2: Vision */}
       <div id="section2" className="section section-with-image">
         <div className="text-content">
-          <h2>NUESTRA VISION</h2>
-          <p>
-            Fortalecer nuestro liderazgo en el mercado peruano, a fin de
-            contribuir al éxito de nuestros clientes y alcanzar nuestras metas
-            de crecimiento.
-          </p>
+          <h2>{content.vision.title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: content.vision.paragraphs }} />
         </div>
         <div className="image-content">
           <img
-            src="https://perutractor.com/img-productos/secciones/vision.jpg"
+            src={`/secciones/${content.vision.image}`}
             alt="Our Vision"
           />
         </div>
@@ -76,16 +91,12 @@ function Nosotros() {
       {/* Section 3: Mission */}
       <div id="section3" className="section section-with-image">
         <div className="text-content">
-          <h2>NUESTRA MISION</h2>
-          <p>
-            Comercializar repuestos de maquinaria pesada para la marca
-            Caterpillar®, en el mercado peruano a precios competitivos y
-            excelentes tiempos de entrega.
-          </p>
+          <h2>{content.mission.title}</h2>
+          <div dangerouslySetInnerHTML={{ __html: content.mission.paragraphs }} />
         </div>
         <div className="image-content">
           <img
-            src="https://perutractor.com/img-productos/secciones/mision.jpg"
+            src={`/secciones/${content.mission.image}`}
             alt="Our Mission"
           />
         </div>

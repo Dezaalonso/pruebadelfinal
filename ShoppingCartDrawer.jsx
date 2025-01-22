@@ -34,8 +34,7 @@ function ShoppingCartDrawer() {
             >
               <h4>{product.nombre}</h4>
               <img
-                src={product.imagen}
-                alt={product.descripcion}
+                src={`/tractores/${product.imagen}`}
                 style={{ width: "100%", borderRadius: 8 }}
               />
               <p>{product.descripcion}</p>

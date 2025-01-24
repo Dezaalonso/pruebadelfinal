@@ -36,11 +36,15 @@ function Producto2() {
           map.get(tipoNombre).items.push({
             nombre: item.datos.nombre,
             imagen: item.datos.imagen,
+            imagen2: item.datos.imagen2,
+            imagen3: item.datos.imagen3,
             serie: item.datos.serie,
             descripcion: item.datos.caracteristicas,
             precio: item.datos.precio,
             año: item.datos.año,
-            horas: item.datos.horas
+            horas: item.datos.horas,
+            venta: item.datos.venta,
+            igv: item.datos.igv
           });
         });
         setItemsMap(map);

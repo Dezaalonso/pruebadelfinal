@@ -15,6 +15,7 @@ import Nosotros from './Nosotros';
 import Profile from './profile';
 import ShoppingCartDrawer from './ShoppingCartDrawer'; // Import the drawer
 import { useShoppingCart } from './ShoppingCartContext'; // Import the cart context
+import ProductoDetallePage from "./ProductoDetallePage";
 import IconButton from '@mui/material/IconButton';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
@@ -41,6 +42,10 @@ function App() {
         <Route path="/maquinaria" element={<Producto2 />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/producto/:tipo" element={<ProductoDetalle />} />
+        <Route
+          path="/detalle-producto/:tipo/:nombre"
+          element={<ProductoDetallePage />}
+        />
         <Route path="/contact" element={<Contact />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/nosotros" element={<Nosotros />} />

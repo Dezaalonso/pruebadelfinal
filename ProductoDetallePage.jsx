@@ -25,7 +25,7 @@ function ProductoDetallePage() {
         {images.map((img, index) => (
           <img
             key={index}
-            src={`/tractores/${img}`}
+            src={`http://localhost:3000/react/tractores/${img}`}
             alt={`Thumbnail ${index + 1}`}
             onClick={() => setSelectedImage(img)}
             style={{
@@ -38,7 +38,7 @@ function ProductoDetallePage() {
       {/* Main Image */}
       <div className="product-image-container">
         <img
-          src={`/tractores/${selectedImage}`}
+          src={`http://localhost:3000/react/tractores/${selectedImage}`}
           alt={product.descripcion}
         />
       </div>
@@ -60,7 +60,8 @@ function ProductoDetallePage() {
               variant="contained"
               color="secondary"
               onClick={() => addToCart(product)} // Add product to cart
-            ></Button>
+            >Agregar al carrito</Button>
+        <p> </p>
         <Button
           variant="contained"
           color="primary"

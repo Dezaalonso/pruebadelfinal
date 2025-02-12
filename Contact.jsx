@@ -25,29 +25,24 @@ function Contactos() {
     // Validate required fields
     if (!correo.trim()) newErrors.correo = "el correo es requerido.";
     if (!name.trim()) newErrors.name = "Name or Company is required.";
-    if (!ruc.trim()) newErrors.ruc = "RUC is required.";
-    if (!address.trim()) newErrors.address = "Address is required.";
     if (!phone.trim()) newErrors.phone = "Phone is required.";
-    if (!country) newErrors.country = "Country is required.";
-    if (!region) newErrors.region = "Region is required.";
     if (!consulta.trim()) newErrors.consulta = "Consulta is required."; // Validate consulta
+
+
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
       const payload = {
-        correo,
+        correo, 
         name,
-        ruc,
-        address,  
         phone,
-        country,
-        region,
         consulta, // Include consulta in the payload
+        header: "Consulta"
       };
 
       try {
-        const response = await fetch("http://127.0.0.1:5001/correo", {
+        const response = await fetch("http://127.0.0.1:5001/consulta", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -93,43 +88,6 @@ function Contactos() {
           placeholder="Enter name or company"
         />
         {errors.name && <p className="error">{errors.name}</p>}
-
-        <label htmlFor="country">Pais: </label>
-        <div>
-          <CountryDropdown
-            value={country}
-            onChange={(val) => setCountry(val)}
-            className="dropdown"
-          />
-          {errors.country && <p className="error">{errors.country}</p>}
-          <RegionDropdown
-            country={country}
-            value={region}
-            onChange={(val) => setRegion(val)}
-            className="dropdown"
-          />
-          {errors.region && <p className="error">{errors.region}</p>}
-        </div>
-
-        <label htmlFor="ruc">Ruc: </label>
-        <input
-          name="ruc"
-          id="ruc"
-          value={ruc}
-          onChange={(e) => setRuc(e.target.value)}
-          placeholder="0000000000"
-        />
-        {errors.ruc && <p className="error">{errors.ruc}</p> }
-
-        <label htmlFor="address">Dirección: </label>
-        <input
-          name="address"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Dirección"
-        />
-        {errors.address && <p className="error">{errors.address}</p>}
 
         <label htmlFor="phone">Teléfono: </label>
         <input

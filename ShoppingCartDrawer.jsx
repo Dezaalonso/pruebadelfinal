@@ -34,10 +34,13 @@ function ShoppingCartDrawer() {
             >
               <h4>{product.nombre}</h4>
               <img
-                src={`/tractores/${product.imagen}`}
+                src={`http://localhost/react/tractores/${product.imagen}`}
                 style={{ width: "100%", borderRadius: 8 }}
               />
-              <p>{product.descripcion}</p>
+              <div
+                className="product-description"
+                dangerouslySetInnerHTML={{ __html: product.descripcion }}
+              />
               <p><strong>Precio:</strong> {product.precio}</p>
               <Button
                 variant="contained"

@@ -68,7 +68,7 @@ function Producto2() {
 
   return (
     <div>
-      <h1>Items</h1>
+      <h1>Maquinarias</h1>
       <div className="cards">
         {Array.from(itemsMap.entries()).map(([tipoNombre, { items, tipoImagen }], index) => (
           <Link
@@ -80,10 +80,11 @@ function Producto2() {
             <div className="card"> 
               <h2>{tipoNombre}</h2>
               <img
-                src={`/categoria-tractores/${tipoImagen}`} // Use tipoImagen for the card image
+                src={`http://localhost/react/categoria-tractores/${tipoImagen}`} // Use tipoImagen for the card image
                 alt={tipoNombre}
                 className="card-image"
               />
+              <p className="product-count">Cantidad: {items.length}</p>
             </div>
           </Link>
         ))}

@@ -47,3 +47,7 @@
   margin: 12px 0;
   color: #555; /* Subtle heading color */
 }
+
+.card .product-count{
+  color: #ff0000;
+}

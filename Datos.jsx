@@ -22,11 +22,11 @@ function DataPage() {
     const newErrors = {};
 
     // Validate required fields
-    if (!name.trim()) newErrors.name = "Name or Company is required.";
-    if (!address.trim()) newErrors.address = "Address is required.";
-    if (!phone.trim()) newErrors.phone = "Phone is required.";
-    if (!country) newErrors.country = "Country is required.";
-    if (!region) newErrors.region = "Region is required.";
+    if (!name.trim()) newErrors.name = "Nombre o Compañia es requerido.";
+    if (!address.trim()) newErrors.address = "Direccion es requerido.";
+    if (!phone.trim()) newErrors.phone = "Telefono es requerido.";
+    if (!country) newErrors.country = "Pais es requerido.";
+    if (!region) newErrors.region = "Region es requerido.";
 
     // Validate RUC only if the country is Peru
     if (country === "Peru" && !ruc.trim()) {
@@ -39,7 +39,7 @@ function DataPage() {
       const payload = {
         name,
         address,
-        ruc: country === "Peru" ? ruc : null, // Only include RUC if the country is Peru
+        ruc: country === "Peru" ? ruc : null, // Only include RUC if th e country is Peru
         phone,
         country,
         region,
@@ -48,7 +48,7 @@ function DataPage() {
       };
 
       try {
-        const response = await fetch("http://127.0.0.1:5001/correo", {
+        const response = await fetch("http://127.0.0.1:5001/registrar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

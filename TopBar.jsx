@@ -18,9 +18,13 @@ function TopBar() {
         <i className="fa fa-fw fa-home"></i> Inicio
       </NavLink>
 
+      <NavLink to="/repuestos" className="nav-link" activeClassName="active">
+        <i class="fa fa-cog" aria-hidden="true"></i> Repuestos
+      </NavLink>
+
       <NavLink to="/maquinaria" className="nav-link" activeClassName="active">
-      <i class="fa fa-wrench" aria-hidden="true"></i> Repuestos
-          </NavLink>
+        <i class="fa fa-truck" aria-hidden="true"></i> Maquinaria
+      </NavLink>
 
       {/* Contact Links */}
       <NavLink to="/nosotros" className="nav-link" activeClassName="active">

@@ -23,7 +23,7 @@ function Home() {
           throw new Error("Failed to fetch banners");
         }
         const data = await response.json();
-        setBanners(data.map(item => `/banners/${item.banner}`)); // Construct banner URLs
+        setBanners(data.map(item => `http://localhost/react/banners/${item.banner}`)); // Construct banner URLs
       } catch (err) {
         setErrorBanners(err.message);
       } finally {
@@ -41,7 +41,7 @@ function Home() {
         const data = await response.json();
         setTractors(data.map(item => ({
           name: item.nombre,
-          image: `/tractores/${item.imagen}`, // Construct tractor image URLs
+          image: `http://localhost:3000/react/tractores/${item.imagen}`, // Construct tractor image URLs
           price: item.precio
         })));
       } catch (err) {

@@ -22,7 +22,7 @@ function ProductoDetalle() {
           <div key={index} className="product-detail-card">
             <h2>{product.nombre}</h2>
             <img
-              src={`/tractores/${product.imagen}`}
+              src={`http://localhost:3000/react/tractores/${product.imagen}`}
               alt={product.descripcion}
               className="product-image"
             />

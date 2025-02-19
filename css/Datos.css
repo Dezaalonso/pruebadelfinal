@@ -7,13 +7,25 @@ body {
   padding: 0;
 }
 
-.es {
-  max-width: 600px;
+.es { 
+  max-width: 1400px;
   margin: 20px auto;
   background: #ffffff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 20px 100px;
+  
+}
+
+.es > div {
+  background-color: #ffffff;
+
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
 }
 
 h2, h3 {

@@ -18,7 +18,7 @@ export default function ProductGroups() {
   }, []);
 
   const handleNavigation = (familiaId) => {
-    navigate(`/familia/${familiaId}`);
+    navigate(`/repuestos/${familiaId}`);
   };
 
   return (
@@ -26,8 +26,11 @@ export default function ProductGroups() {
       <h1>Productos y Repuestos</h1>
       <ReactSearchBox
         placeholder="Buscar tipos de productos..."
-        data={groups.map((group) => ({ key: group.familia, value: group.nom_familia }))}
-        onSelect={(record) => handleNavigation(record.key)}
+        data={groups.map((group) => ({
+          key: group.familia,
+          value: group.nom_familia
+        }))}
+        onSelect={(record) => handleNavigation(record.item.key)} // Corrected here
       />
       <div className="group-list">
         {groups.map((group) => (

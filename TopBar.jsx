@@ -7,8 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-function TopBar() {
-  const token = localStorage.getItem("token");
+function TopBar() { 
+  const token = localStorage.getItem("nombre");
   const { cart, toggleDrawer } = useShoppingCart(); // Access cart and drawer toggle
 
   return (

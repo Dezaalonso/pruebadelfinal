@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Grid,
@@ -8,6 +9,8 @@ import {
   ButtonBase,
   Paper
 } from "@material-ui/core";
+
+
 
 var sampleAccount = {
   image: "https://i.kym-cdn.com/entries/icons/original/000/031/727/cover10.jpg",
@@ -76,6 +79,7 @@ function Account({ id }) {
 }
 
 function PasswordMgmt({ id }) {
+  const navigate = useNavigate();
   const [currPassword, setCurrPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -90,6 +94,11 @@ function PasswordMgmt({ id }) {
       currPassword === correctPW && newPassword === confirmNewPassword;
     console.log(check);
     setSubmittable(check);
+  }
+
+  const logoutClick = ()=>{
+    localStorage.clear();
+    window.location.href = "/";
   }
 
   return (
@@ -131,6 +140,9 @@ function PasswordMgmt({ id }) {
             Submit
           </Button>
         </Grid>
+        <Button className="navigate-button" onClick={(logoutClick)}>
+      Ver mas de nuestros productos
+    </Button>
       </Grid>
     </Paper>
   );

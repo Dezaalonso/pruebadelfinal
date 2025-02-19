@@ -73,71 +73,79 @@ function DataPage() {
 
   return (
     <div className="es">
-      <h3>Informacion Adicional</h3>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Nombre o Empresa: </label>
-        <input
-          name="name"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter name or company"
-        />
-        {errors.name && <p className="error">{errors.name}</p>}
-
-        <label htmlFor="country">Pais: </label>
-        <div>
-          <CountryDropdown
-            value={country}
-            onChange={(val) => setCountry(val)}
-            className="dropdown"
+      <div clasName="Forms"> 
+        <h3>Informacion Adicional</h3>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="name">Nombre o Empresa: </label>
+          <input
+            name="name"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter name or company"
           />
-          {errors.country && <p className="error">{errors.country}</p>}
-          <RegionDropdown
-            country={country}
-            value={region}
-            onChange={(val) => setRegion(val)}
-            className="dropdown"
-          />
-          {errors.region && <p className="error">{errors.region}</p>}
-        </div>
+          {errors.name && <p className="error">{errors.name}</p>}
 
-        {country === "Peru" && ( // Show RUC field only if the country is Peru
-          <>
-            <label htmlFor="ruc">Ruc: </label>
-            <input
-              name="ruc"
-              id="ruc"
-              value={ruc}
-              onChange={(e) => setRuc(e.target.value)}
-              placeholder="0000000000"
+          <label htmlFor="country">Pais: </label>
+          <div>
+            <CountryDropdown
+              value={country}
+              onChange={(val) => setCountry(val)}
+              className="dropdown"
             />
-            {errors.ruc && <p className="error">{errors.ruc}</p>}
-          </>
-        )}
+            {errors.country && <p className="error">{errors.country}</p>}
+            <RegionDropdown
+              country={country}
+              value={region}
+              onChange={(val) => setRegion(val)}
+              className="dropdown"
+            />
+            {errors.region && <p className="error">{errors.region}</p>}
+          </div>
 
-        <label htmlFor="address">Direccion: </label>
-        <input
-          name="address"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Enter address"
-        />
-        {errors.address && <p className="error">{errors.address}</p>}
+          {country === "Peru" && ( // Show RUC field only if the country is Peru
+            <>
+              <label htmlFor="ruc">Ruc: </label>
+              <input
+                name="ruc"
+                id="ruc"
+                value={ruc}
+                onChange={(e) => setRuc(e.target.value)}
+                placeholder="0000000000"
+              />
+              {errors.ruc && <p className="error">{errors.ruc}</p>}
+            </>
+          )}
 
-        <label htmlFor="phone">Telefono: </label>
-        <input
-          name="phone"
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Enter phone number"
-        />
-        {errors.phone && <p className="error">{errors.phone}</p>}
+          <label htmlFor="address">Direccion: </label>
+          <input
+            name="address"
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Enter address"
+          />
+          {errors.address && <p className="error">{errors.address}</p>}
 
-        <button type="submit">Submit</button>
-      </form>
+          <label htmlFor="phone">Telefono: </label>
+          <input
+            name="phone"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Enter phone number"
+          />
+          {errors.phone && <p className="error">{errors.phone}</p>}
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <div className="image">
+      <img
+            src={`C:/Users/Contador/Music/paginaweb-perutractor/frontend/public/photo-daros.jpeg`}
+            alt="Our Mission"
+          />
+      </div>
     </div>
   );
 }

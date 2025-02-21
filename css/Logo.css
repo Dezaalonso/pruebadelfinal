@@ -16,6 +16,11 @@
   object-fit: contain; /* Ensures the logo scales properly */
 }
 
+.cantt{
+  font-size: 18px;
+  color: rgb(211, 17, 17);
+}
+
 .logo-login-container .nav-link {
   color: rgb(0, 0, 0);
   text-decoration: none;

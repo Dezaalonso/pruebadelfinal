@@ -1,0 +1,19 @@
+.containerr {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .containerr .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  
+  .containerr .product-card {
+    width: 300px;
+    padding: 16px;
+    text-align: left;
+  }
+  

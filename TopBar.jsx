@@ -45,9 +45,13 @@ function TopBar() {
           <i className="fa fa-fw fa-sign-in"></i> Registrarse
         </NavLink>
       )}
+      <div className="carro">
+      <NavLink to="/Cotizaciones" className="nav-link" activeClassName="active">
+      <i class="fa fa-file-text" aria-hidden="true"></i> 
+      </NavLink>
 
       {/* Cart Icon with Drawer */}
-      <div className="carro">
+      
         <IconButton onClick={() => toggleDrawer(true)}>
           <Badge badgeContent={cart.length} color="secondary">
             <ShoppingCartIcon className="cart-icon" />

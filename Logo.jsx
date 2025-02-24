@@ -24,10 +24,18 @@ function Logo() {
       </div>
 
       {/* Display only if cotizaciones exists */}
-      {cotizaciones && (
+      {cotizaciones > 0 &&(
         <div>
           <h3 className="cantt">
             Tienes hasta {cotizaciones} consultas
+          </h3>
+        </div>
+      )}
+      {cotizaciones == 0 && (
+        <div>
+          <h3 className="cantt">
+            Ya no puedes hacer mas consultas, contacta a 
+            ventas@perutractor.com
           </h3>
         </div>
       )}

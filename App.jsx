@@ -18,6 +18,7 @@ import ShoppingCartDrawer from './ShoppingCartDrawer'; // Import the drawer
 import { useShoppingCart } from './ShoppingCartContext'; // Import the cart context
 import ProductoDetallePage from "./ProductoDetallePage";
 import Login from "./login";
+import Cotizaciones from './Cotizaciones';
 
 function App() {
   const { toggleDrawer } = useShoppingCart(); // Access the toggle function from context
@@ -50,6 +51,7 @@ function App() {
         />
         <Route path="/contact" element={<Contact />} />
         <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/Cotizaciones" element={<Cotizaciones />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/login" element={<Login />} />
         <Route path="/SignUp/Datos" element={<Datos />} />

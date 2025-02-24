@@ -5,23 +5,26 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import Pagination from "@mui/material/Pagination";
 import "./css/RepuestosInfo.css";
 
 export default function RepuestosInfo() {
-  const { familiaId } = useParams(); // Get familiaId from URL
+  const { familiaId } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cotizaciones, setCotizaciones] = useState(0);
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
-    // Get cotizaciones from localStorage
     const storedCotizaciones = localStorage.getItem("cotizaciones");
     if (storedCotizaciones) {
       setCotizaciones(parseInt(storedCotizaciones, 10));
     }
 
-    // Fetch product data
     fetch(`http://127.0.0.1:5001/familia/${familiaId}`)
       .then((res) => {
         if (!res.ok) {
@@ -40,34 +43,31 @@ export default function RepuestosInfo() {
   }, [familiaId]);
 
   const handleCotizar = async (product) => {
-    if (cotizaciones <= 0) return; // Prevent negative values
+    if (cotizaciones <= 0) return;
 
-    const payload = localStorage.getItem("id")
+    const id = localStorage.getItem("id");
+    if (!id) {
+      alert("No ID found in localStorage.");
+      return;
+    }
 
     try {
-      // Call API to decrease cotizaciones count
       const response = await fetch("http://127.0.0.1:5001/decrease_cotizacion", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload), // Send decrement request
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }), // Correctly sending as an object
       });
 
       if (!response.ok) {
         throw new Error("Failed to update cotizaciones.");
       }
 
-      // Update localStorage and state
       const newCotizaciones = cotizaciones - 1;
       setCotizaciones(newCotizaciones);
       localStorage.setItem("cotizaciones", newCotizaciones.toString());
 
-      // Get existing cotizaciones list from localStorage
       const storedList = localStorage.getItem("cotizacionesList");
       const cotizacionesList = storedList ? JSON.parse(storedList) : [];
-
-      // Add new product to the list
       cotizacionesList.push(product);
       localStorage.setItem("cotizacionesList", JSON.stringify(cotizacionesList));
 
@@ -78,19 +78,23 @@ export default function RepuestosInfo() {
     }
   };
 
-  if (loading) {
-    return <CircularProgress />;
-  }
+  if (loading) return <CircularProgress />;
+  if (error) return <Typography color="error">{error}</Typography>;
 
-  if (error) {
-    return <Typography color="error">{error}</Typography>;
-  }
+  // Pagination Logic
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   return (
     <div className="containerr">
-      <h1>Productos</h1>
+      <h1>Productos y Repuestos</h1>
       <div className="product-list">
-        {products.map((product) => (
+        {currentProducts.map((product) => (
           <Card key={product.cod_producto} className="product-card">
             <CardContent>
               <Typography variant="h6">{product.descripcion}</Typography>
@@ -100,9 +104,9 @@ export default function RepuestosInfo() {
               {cotizaciones > 0 && (
                 <>
                   <Typography>Precio: ${product.vvta_us}</Typography>
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
+                  <Button
+                    variant="contained"
+                    color="primary"
                     onClick={() => handleCotizar(product)}
                   >
                     Cotizar Producto
@@ -113,6 +117,15 @@ export default function RepuestosInfo() {
           </Card>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      <Pagination
+        count={Math.ceil(products.length / itemsPerPage)}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="primary"
+        className="pagination"
+      />
     </div>
   );
 }

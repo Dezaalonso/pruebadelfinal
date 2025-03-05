@@ -88,10 +88,10 @@ function Home() {
             </div>
           ))}
         </div>
-        <button className="navigate-button" onClick={() => navigate('/maquinaria')}>
+      </div>
+      <button className="navigate-button" onClick={() => navigate('/maquinaria')}>
           Ver mas de nuestros productos
         </button>
-      </div>
       <div className="video-container">
         <h1>Sobre Nosotros</h1>
         <div className="video-wrapper">

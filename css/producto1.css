@@ -5,15 +5,42 @@ body {
     padding: 0;
   }
   
-
   
-  h1 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 16px;
-    text-align: center;
+  
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures proper spacing */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Centers the container */
+    padding: 16px;
   }
   
+  .row h1 {
+    flex: 1; /* Takes up available space */
+    text-align: center; /* Centers the text */
+    margin: 0;
+    font-size: 1.8rem;
+  }
+  
+  .row button {
+    background-color: #eeec96;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 6px 12px; /* Makes the button smaller */
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 4px;
+    width: 120px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .row button:hover {
+    background-color: #1565c0;
+  }
+
   .group-list {
     overflow-y: auto;
     max-height: 500px;
@@ -39,7 +66,7 @@ body {
     background-color: #eaeaea;
   }
   
-  .button {
+  .group-list .button {
     width: 100%;
     text-align: left;
     font-size: 1rem;
@@ -48,13 +75,13 @@ body {
     padding: 10px;
     border-radius: 4px;
     border: none;
-    background: #1976d2;
+    background: #eb5050;
     color: white;
     cursor: pointer;
     transition: background 0.3s;
   }
   
-  .button:hover {
+  .group-list .button:hover {
     background: #1565c0;
   }
   

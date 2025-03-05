@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,160 +6,145 @@ import {
   Grid,
   Typography,
   Button,
-  ButtonBase,
-  Paper
+  Paper,
 } from "@material-ui/core";
 
-
-
-var sampleAccount = {
-  image: "https://i.kym-cdn.com/entries/icons/original/000/031/727/cover10.jpg",
-  name: "Juanaton Gongsaulress",
-  email: "6ang_6ang70@hotmail.com",
-  title: "El Jefe",
-  role: ["Administrator"],
-  password: "password"
-};
-
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 3
-  },
   paper: {
     padding: theme.spacing(4),
     margin: "auto",
-    width: 500
+    width: 500,
   },
-  image: {
-    width: 150,
-    height: 150
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(2),
   },
-  img: {
-    margin: "auto",
-    display: "block",
-    width: "100%",
-    height: "100%"
-  }
 }));
 
-function Account({ id }) {
+function ClientProfile() {
   const classes = useStyles();
-
-  return (
-    <Paper className={classes.paper}>
-      <Grid container spacing={6}>
-        <Grid item xs={12} container justify="flex-start">
-          <Typography variant="h4">Account Info</Typography>
-        </Grid>
-        <Grid item xs={12} container>
-          <Grid item container direction="column" align="start" spacing={1}>
-            <Typography gutterBottom variant="h5">
-              {id.name}
-            </Typography>
-            <Typography variant="body1" gutterBottom color="textSecondary">
-              Title: {id.title}
-            </Typography>
-            {id.role.length == 1 ? (
-              <Typography variant="body2" color="textSecondary">
-                Role: {id.role[0]}
-              </Typography>
-            ) : (
-              <Typography variant="body2" color="textSecondary">
-                Roles: {id.role.toString()}
-              </Typography>
-            )}
-            <Typography variant="body2" color="textSecondary">
-              Email: {id.email}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-}
-
-function PasswordMgmt({ id }) {
   const navigate = useNavigate();
-  const [currPassword, setCurrPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [correctPassword, setCorrectPassword] = useState(false);
-  const [change, setChange] = useState(false);
-  const [submittable, setSubmittable] = useState(false);
-  const classes = useStyles();
-  const correctPW = "password";
+  const clientId = localStorage.getItem("id");
 
-  function validateNewPassword() {
-    var check =
-      currPassword === correctPW && newPassword === confirmNewPassword;
-    console.log(check);
-    setSubmittable(check);
-  }
+  const [client, setClient] = useState({
+    id: clientId,
+    nombre: "",
+    email: "",
+    direccion: "",
+    telefono: "",
+  });
 
-  const logoutClick = ()=>{
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:5001/user/${clientId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          console.error("Error fetching client:", data.error);
+        } else {
+          setClient({
+            id: clientId,
+            nombre: data[0].name, // Adjusted field name to match API
+            email: data[0].email,
+            direccion: data[0].direcion, // Fixed field name
+            telefono: data[0].telefono, // Fixed field name
+          });
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      });
+  }, [clientId]);
+
+  const handleChange = (e) => {
+    setClient({ ...client, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    fetch("http://127.0.0.1:5001/update", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(client),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Actualización exitosa") {
+          alert("Perfil actualizado correctamente");
+        } else {
+          alert("Error al actualizar el perfil");
+        }
+      })
+      .catch((err) => {
+        console.error("Update error:", err);
+        alert("Error en la actualización");
+      });
+  };
+
+  const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/";
+    navigate("/");
+  };
+
+  if (loading) {
+    return <Typography>Cargando información...</Typography>;
   }
 
   return (
     <Paper className={classes.paper}>
-      <Grid container direction="column" spacing={4}>
-        <Grid container justify="flex-start">
-          <Typography variant="h4">Password Mangement</Typography>
-        </Grid>
-        <Grid item>
-          <TextField
-            label="Current Password"
-            variant="outlined"
-            type="password"
-            fullWidth
-            onChange={(e) => setCurrPassword(e.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            disabled={currPassword.length == 0}
-            label="New Password"
-            variant="outlined"
-            type="password"
-            fullWidth
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            disabled={currPassword.length == 0}
-            onChange={() => validateNewPassword()}
-            label="Confirm New Password"
-            variant="outlined"
-            type="password"
-            fullWidth
-          />
-        </Grid>
-        <Grid container justify="flex-end">
-          <Button disabled={submittable} variant="contained" color="primary">
-            Submit
-          </Button>
-        </Grid>
-        <Button className="navigate-button" onClick={(logoutClick)}>
-      Ver mas de nuestros productos
-    </Button>
-      </Grid>
+      <Typography variant="h4">Editar Perfil</Typography>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <TextField
+          label="Nombre"
+          name="nombre"
+          value={client.nombre}
+          onChange={handleChange}
+          fullWidth
+        />
+        <TextField
+          label="Correo"
+          name="email"
+          value={client.email}
+          onChange={handleChange}
+          fullWidth
+        />
+        <TextField
+          label="Dirección"
+          name="direccion"
+          value={client.direccion}
+          onChange={handleChange}
+          fullWidth
+        />
+        <TextField
+          label="Teléfono"
+          name="telefono"
+          value={client.telefono}
+          onChange={handleChange}
+          fullWidth
+        />
+        <Button variant="contained" color="primary" type="submit">
+          Guardar Cambios
+        </Button>
+        <Button variant="contained" color="secondary" onClick={handleLogout}>
+          Cerrar Sesión
+        </Button>
+      </form>
     </Paper>
   );
 }
-export default function Profile({ id = sampleAccount }) {
-  const [profileImg, setprofileImg] = useState(id.image);
-  const [name, setName] = useState(id.name);
-  const [email, setEmail] = useState(id.email);
-  const [edited, setEdited] = useState(false);
-  const classes = useStyles();
+
+export default function Profile() {
   return (
-    <Grid container direction="column" justify="center" spacing={5}>
+    <Grid container justifyContent="center">
       <Grid item>
-        <Account id={id} />
-      </Grid>
-      <Grid item>
-        <PasswordMgmt id={id} />
+        <ClientProfile />
       </Grid>
     </Grid>
   );

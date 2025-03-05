@@ -19,6 +19,7 @@ import { useShoppingCart } from './ShoppingCartContext'; // Import the cart cont
 import ProductoDetallePage from "./ProductoDetallePage";
 import Login from "./login";
 import Cotizaciones from './Cotizaciones';
+import Buscar_Codigos from './Buscar_codigos';
 
 function App() {
   const { toggleDrawer } = useShoppingCart(); // Access the toggle function from context
@@ -44,6 +45,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/producto/:tipo" element={<ProductoDetalle />} />
         <Route path="/repuestos/:familiaId" element={<RepuestosInfo />} />
+        <Route path="/Buscar_codigos" element={<Buscar_Codigos />} />
 
         <Route
           path="/detalle-producto/:tipo/:nombre"

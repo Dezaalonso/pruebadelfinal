@@ -46,9 +46,11 @@ function TopBar() {
         </NavLink>
       )}
       <div className="carro">
-      <NavLink to="/Cotizaciones" className="nav-link" activeClassName="active">
-      <i class="fa fa-file-text" aria-hidden="true"></i> 
-      </NavLink>
+      {token ? (
+        <NavLink to="/Cotizaciones" className="nav-link" activeClassName="active">
+          <i class="fa fa-file-text" aria-hidden="true"></i> 
+        </NavLink>
+      ):( <></>)}
 
       {/* Cart Icon with Drawer */}
       

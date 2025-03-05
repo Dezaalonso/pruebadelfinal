@@ -56,6 +56,9 @@
 .navigate-button {
   margin-top: 20px;
   padding: 10px 20px;
+  width: 300px;
+  margin: 0 auto;
+  display: block;
   font-size: 16px;
   color: #fff;
   background-color: #007bff;

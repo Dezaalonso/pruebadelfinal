@@ -123,7 +123,7 @@ function SignUp() {
               isActive ? "signInPrompt active" : "signInPrompt"
             }
           >
-            Sign In
+            Inicia Sesion
           </NavLink>
         </p>
       </div>

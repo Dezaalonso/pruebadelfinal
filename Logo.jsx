@@ -15,6 +15,27 @@ function Logo() {
     }
   }, []); // Runs once when component mounts
 
+  const Callto = ({ phone, children }) => {
+    return <a href={`tel:${phone}`}>{children}</a>;
+  };
+
+  const openEmail = () => {
+    const recipient = "example@example.com";
+    const subject = encodeURIComponent("Subject Here");
+    const body = encodeURIComponent("Please fill the following detail:\n\n1. Detail 1\n2. Detail 2\n3. Detail 3");
+  
+    // Check if default email client exists (mailto)
+    try {
+      window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    } catch (e) {
+      // Fallback to Outlook Web App
+      window.open(
+        `https://outlook.office.com/mail/deeplink/compose?to=${recipient}&subject=${subject}&body=${body}`,
+        '_blank'
+      );
+    }
+  };
+
   return (
     <div className="logo-login-container">
       <div className="logo">
@@ -39,6 +60,13 @@ function Logo() {
           </h3>
         </div>
       )}
+
+      <div>
+        <h3 className="cantt">
+          <a href="#" color="red" onClick={openEmail}>ventas@perutractor.com</a>
+        </h3>
+        <Callto phone="+51976450153">+51 976 450 153</Callto>
+      </div>
 
       <NavLink to={token ? "/profile" : "/SignUp"} className="nav-link" activeClassName="active">
         <i className="fa fa-fw fa-user"></i> {token ? "Perfil" : "Registrarse"}

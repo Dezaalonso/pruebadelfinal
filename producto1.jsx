@@ -17,13 +17,21 @@ export default function ProductGroups() {
       .catch((err) => console.error("Error fetching groups:", err));
   }, []);
 
+  const Buscar_Codigos = ()=>{
+    window.location.href = "/Buscar_Codigos";
+  }
+
   const handleNavigation = (familiaId) => {
     navigate(`/repuestos/${familiaId}`);
   };
 
   return (
     <div className="container">
-      <h1>Productos y Repuestos</h1>
+      <div className="row">
+        <h1>Productos y Repuestos</h1>
+        <button onClick={(Buscar_Codigos)}>Buscar con codigos</button>
+      </div>
+      
       <ReactSearchBox
         placeholder="Buscar tipos de productos..."
         data={groups.map((group) => ({

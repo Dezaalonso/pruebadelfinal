@@ -4,8 +4,8 @@ import './css/EndBar.css';
 const EndBar = () => {
     return (
         <footer className="footer">
-            <p className="footer-title">Síguenos a través de:</p>
             <div className="social-links">
+                <p className="footer-title">Síguenos a través de:</p>
                 <div className="column">
                 <a
                     href="https://www.facebook.com/PeruTractor/?locale=es_LA"
@@ -40,12 +40,16 @@ const EndBar = () => {
                     <i className="fa fa-youtube-play" aria-hidden="true"></i>
                 </a>
                 </div>
-                <div className="column">
-                    <p className="footer-title">Nuestras Oficinas: </p>
-                    <p>LOCAL PRINCIPAL : Av. Michael Faraday #475 Urb. Santa Rosa - Ate (Ref. al lado del mercado Santa Rosa)</p>
-                </div>
             </div>
-                <p className="footer-note">© CAT® y CATERPILLAR® es propiedad de sus respectivos dueños. Perú Tractor SRL®, todos los derechos reservados</p>
+            <div>
+                <p className="footer-title">Nuestras Oficinas: </p>
+                    <div className="locaciones">
+                        <p>LOCAL PRINCIPAL: Av. Michael Faraday #475 Urb. Santa Rosa - Ate (Ref. al lado del mercado Santa Rosa)</p>
+                        <p>Local de Arriola: Pasaje. Nicolas Arriola 182 Block B Tienda 14-B La Victoria en la rotonda del ovalo</p>
+                        <p>Local de Arequipa: Av.Variante de Uchumayo Km 4 (Via de Evitamiento) Cerro Colorado</p>
+                        <p>Huachipa Taller de Reparaciones: Calle Los Viquez Mz. A Lt. 10 Urb. Carapongo Huachipa final Ramiro Priale pasando puente derecha(Ref. al lado del mercado Santa Rosa)</p>
+                    </div>
+            </div>
         </footer>
     );
 };

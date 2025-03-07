@@ -1,20 +1,64 @@
-import { useState, useEffect } from "react";
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField
+} from "@mui/material";
 import * as XLSX from "xlsx";
 
 export default function Cotizaciones() {
   const [cotizaciones, setCotizaciones] = useState([]);
   const [clientName, setClientName] = useState("");
   const [quantities, setQuantities] = useState({});
-  const TAX_RATE = 0.18; // 18% tax
+  const [IGV, setIGV] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState(1);
+  const [openForm, setOpenForm] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const verifyToken = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5001/perfil", {
+          method: "GET",
+          headers: { Authorization: `${token}` },
+        });
+
+        if (!response.ok) {
+          localStorage.clear();
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+        localStorage.clear();
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchIGVAndExchangeRate();
+
     const storedList = localStorage.getItem("cotizacionesList");
     if (storedList) {
       const parsedList = JSON.parse(storedList);
       setCotizaciones(parsedList);
 
-      // Initialize quantities with default value of 1
       const initialQuantities = {};
       parsedList.forEach((product) => {
         initialQuantities[product.cod_producto] = 1;
@@ -23,14 +67,27 @@ export default function Cotizaciones() {
     }
   }, []);
 
+  const fetchIGVAndExchangeRate = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:5001/tipo_cambio");
+      const data = await res.json();
+      setIGV(data[0]?.igv || 0.18);
+      setExchangeRate(data[0]?.exchangeRate || 1);
+    } catch (error) {
+      console.error("Error fetching IGV and exchange rate:", error);
+    }
+  };
+
   const handleDownloadExcel = () => {
     const data = cotizaciones.map((product) => ({
       Descripción: product.descripcion,
       Marca: product.marca,
       Modelo: product.modelo,
-      Precio: `$${product.vvta_us}`,
+      Precio_Usd: `$${product.vvta_us}`,
+      Precio_Soles: `S/${(product.vvta_us * exchangeRate).toFixed(2)}`,
       Cantidad: quantities[product.cod_producto] || 1,
-      Subtotal: `$${(quantities[product.cod_producto] || 1) * product.vvta_us}`,
+      Subtotal_Usd: `$${((quantities[product.cod_producto] || 1) * product.vvta_us).toFixed(2)}`,
+      Subtotal_Soles: `S/${((quantities[product.cod_producto] || 1) * product.vvta_us * exchangeRate).toFixed(2)}`,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -78,14 +135,13 @@ export default function Cotizaciones() {
     setCotizaciones(updatedList);
     localStorage.setItem("cotizacionesList", JSON.stringify(updatedList));
 
-    // Remove quantity reference
     const updatedQuantities = { ...quantities };
     delete updatedQuantities[cod_producto];
     setQuantities(updatedQuantities);
   };
 
   const handleQuantityChange = (cod_producto, value) => {
-    const newQuantity = Math.max(1, Number(value)); // Ensure min quantity is 1
+    const newQuantity = Math.max(1, Number(value));
     setQuantities({ ...quantities, [cod_producto]: newQuantity });
   };
 
@@ -99,8 +155,9 @@ export default function Cotizaciones() {
   };
 
   const totalBeforeTax = calculateTotal();
-  const taxAmount = totalBeforeTax * TAX_RATE;
+  const taxAmount = totalBeforeTax * IGV;
   const totalWithTax = totalBeforeTax + taxAmount;
+  const totalInSoles = totalWithTax * exchangeRate;
 
   return (
     <div style={{ padding: "20px" }}>
@@ -118,8 +175,9 @@ export default function Cotizaciones() {
                   <TableCell>Marca</TableCell>
                   <TableCell>Modelo</TableCell>
                   <TableCell>Precio (USD)</TableCell>
+                  <TableCell>Precio (Soles)</TableCell>
                   <TableCell>Cantidad</TableCell>
-                  <TableCell>Subtotal</TableCell>
+                  <TableCell>Subtotal (USD)</TableCell>
                   <TableCell>Eliminar</TableCell>
                 </TableRow>
               </TableHead>
@@ -130,6 +188,7 @@ export default function Cotizaciones() {
                     <TableCell>{product.marca}</TableCell>
                     <TableCell>{product.modelo}</TableCell>
                     <TableCell>${product.vvta_us}</TableCell>
+                    <TableCell>S/{(product.vvta_us * exchangeRate).toFixed(2)}</TableCell>
                     <TableCell>
                       <TextField
                         type="number"
@@ -139,7 +198,7 @@ export default function Cotizaciones() {
                         style={{ width: "60px" }}
                       />
                     </TableCell>
-                    <TableCell>${(quantities[product.cod_producto] || 1) * product.vvta_us}</TableCell>
+                    <TableCell>${((quantities[product.cod_producto] || 1) * product.vvta_us).toFixed(2)}</TableCell>
                     <TableCell>
                       <Button variant="contained" color="secondary" onClick={() => handleDelete(product.cod_producto)}>
                         Eliminar
@@ -153,28 +212,16 @@ export default function Cotizaciones() {
 
           <div style={{ marginTop: "20px", textAlign: "right" }}>
             <h3>Subtotal: ${totalBeforeTax.toFixed(2)}</h3>
-            <h3>Impuesto (18%): ${taxAmount.toFixed(2)}</h3>
-            <h2>Total: ${totalWithTax.toFixed(2)}</h2>
+            <h3>Impuesto ({IGV * 100}%): ${taxAmount.toFixed(2)}</h3>
+            <h2>Total: ${totalWithTax.toFixed(2)} | S/{totalInSoles.toFixed(2)}</h2>
           </div>
 
-          <div style={{ marginTop: "20px" }}>
-            <TextField
-              label="Nombre del Cliente"
-              variant="outlined"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              fullWidth
-            />
-          </div>
-
-          <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Enviar Cotización
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={handleDownloadExcel}>
-              Descargar Excel
-            </Button>
-          </div>
+          <Button variant="contained" color="primary" onClick={() => setOpenForm(true)}>
+            Guardar en Base de Datos
+          </Button>
+          <Button variant="outlined" color="secondary" onClick={handleDownloadExcel}>
+            Descargar Excel
+          </Button>
         </>
       )}
     </div>

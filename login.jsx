@@ -49,7 +49,8 @@ function SignUp() {
         console.log("Server Response:", data);
         localStorage.setItem("id", data.id)
         localStorage.setItem("nombre", data.nombre); // Guardar el nombre del usuario
-        localStorage.setItem("cotizaciones", data.cotizaciones); // Guardar el email del usuario
+        localStorage.setItem("cotizaciones", data.cotizaciones);
+        localStorage.setItem("token", data.token); 
         window.location.href = "/";
       } else {
         alert("Error: " + (data.error || "Credenciales incorrectas."));

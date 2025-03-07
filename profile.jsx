@@ -25,10 +25,9 @@ const useStyles = makeStyles((theme) => ({
 function ClientProfile() {
   const classes = useStyles();
   const navigate = useNavigate();
-  const clientId = localStorage.getItem("id");
+  const token = localStorage.getItem("token");
 
   const [client, setClient] = useState({
-    id: clientId,
     nombre: "",
     email: "",
     direccion: "",
@@ -38,27 +37,41 @@ function ClientProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5001/user/${clientId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          console.error("Error fetching client:", data.error);
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const verifyToken = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5001/perfil", {
+          method: "GET",
+          headers: { Authorization: `${token}` },
+        });
+
+        if (!response.ok) {
+          localStorage.clear();
+          navigate("/login");
         } else {
+          const data = await response.json();
           setClient({
-            id: clientId,
-            nombre: data[0].name, // Adjusted field name to match API
-            email: data[0].email,
-            direccion: data[0].direcion, // Fixed field name
-            telefono: data[0].telefono, // Fixed field name
+            nombre: data.nombre,
+            email: data.email,
+            direccion: data.direccion_empresa,
+            telefono: data.telefono_empresa,
           });
         }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+        localStorage.clear();
+        navigate("/login");
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
-  }, [clientId]);
+      }
+    };
+
+    verifyToken();
+  }, [navigate, token]);
 
   const handleChange = (e) => {
     setClient({ ...client, [e.target.name]: e.target.value });
@@ -71,6 +84,7 @@ function ClientProfile() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `${token}`,
       },
       body: JSON.stringify(client),
     })
@@ -90,7 +104,7 @@ function ClientProfile() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/");
+    navigate("/login");
   };
 
   if (loading) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import "./css/Datos.css";
@@ -6,6 +6,10 @@ import "./css/Datos.css";
 function DataPage() {
   const location = useLocation();
   const formData = location.state;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   // State for form fields
   const [country, setCountry] = useState("");

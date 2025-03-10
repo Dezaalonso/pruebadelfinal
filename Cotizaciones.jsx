@@ -23,6 +23,10 @@ export default function Cotizaciones() {
   const navigate = useNavigate();
 
   useEffect(() => {
+          window.scrollTo(0, 0);
+        });
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) {

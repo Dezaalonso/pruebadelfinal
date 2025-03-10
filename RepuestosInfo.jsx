@@ -20,6 +20,10 @@ export default function RepuestosInfo() {
   const itemsPerPage = 10;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
+  useEffect(() => {
     const storedCotizaciones = localStorage.getItem("cotizaciones");
     if (storedCotizaciones) {
       setCotizaciones(parseInt(storedCotizaciones, 10));
@@ -72,6 +76,7 @@ export default function RepuestosInfo() {
       localStorage.setItem("cotizacionesList", JSON.stringify(cotizacionesList));
 
       alert("Producto agregado a cotización.");
+      window.location.reload(false)
     } catch (error) {
       console.error("Error updating cotizaciones:", error);
       alert("Error al cotizar el producto.");
@@ -103,7 +108,6 @@ export default function RepuestosInfo() {
               <Typography>Stock: {product.stock_f}</Typography>
               {cotizaciones > 0 && (
                 <>
-                  <Typography>Precio: ${product.vvta_us}</Typography>
                   {product.vvta_us > 0 &&(
                   <Button
                     variant="contained"

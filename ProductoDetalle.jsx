@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useShoppingCart } from "./ShoppingCartContext"; // Import the context
 import "./css/ProductoDetalle.css";
@@ -13,6 +13,10 @@ function ProductoDetalle() {
   if (!products || products.length === 0) {
     return <p>No products available for "{tipo}".</p>;
   }
+
+  useEffect(() => {
+        window.scrollTo(0, 0);
+      });
 
   return (
     <div>

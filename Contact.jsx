@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "./css/Contac.css";
 
 function Contactos() {
   const location = useLocation();
+
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    });
 
   // State for form fields
   const [correo, setCorreo] = useState("");

@@ -8,6 +8,10 @@ function Producto2() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+        window.scrollTo(0, 0);
+      });
+
+  useEffect(() => {
     const apiUrl = "http://127.0.0.1:5001/info";
 
     const fetchData = async () => {

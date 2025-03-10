@@ -5,7 +5,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import logo from './resources/blanco.jpg'; // Your logo path
 
 function Logo() {
-  const token = localStorage.getItem("nombre"); // Check for token to show login/profile
+  const token = localStorage.getItem("token"); // Check for token to show login/profile
   const [cotizaciones, setCotizaciones] = useState(null);
 
   useEffect(() => {

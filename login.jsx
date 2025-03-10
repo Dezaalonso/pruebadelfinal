@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./css/Signup.css";
 
@@ -7,6 +7,11 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Scroll to top on render
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Validar email
   const validateEmailInput = () => {
@@ -47,11 +52,11 @@ function SignUp() {
       if (response.ok) {
         alert("Inicio de sesión exitoso!");
         console.log("Server Response:", data);
-        localStorage.setItem("id", data.id)
-        localStorage.setItem("nombre", data.nombre); // Guardar el nombre del usuario
         localStorage.setItem("cotizaciones", data.cotizaciones);
         localStorage.setItem("token", data.token); 
-        window.location.href = "/";
+        
+        // Redirect and refresh the page
+        window.location.href = "/profile";
       } else {
         alert("Error: " + (data.error || "Credenciales incorrectas."));
       }

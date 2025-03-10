@@ -31,6 +31,10 @@ function Home() {
       }
     };
 
+    useEffect(() => {
+            window.scrollTo(0, 0);
+          });
+
     // Fetch tractors
     const fetchTractors = async () => {
       try {

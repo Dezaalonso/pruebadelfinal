@@ -55,6 +55,7 @@ function ClientProfile() {
         } else {
           const data = await response.json();
           setClient({
+            id: data.id,
             nombre: data.nombre,
             email: data.email,
             direccion: data.direccion_empresa,
@@ -105,6 +106,7 @@ function ClientProfile() {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
+    window.location.reload(false)
   };
 
   if (loading) {

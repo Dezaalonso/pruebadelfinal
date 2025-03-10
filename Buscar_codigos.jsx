@@ -75,6 +75,7 @@ export default function SearchPage() {
       localStorage.setItem("cotizacionesList", JSON.stringify(cotizacionesList));
 
       alert("Producto agregado a cotización.");
+      window.location.reload(false)
     } catch (error) {
       console.error("Error updating cotizaciones:", error);
       alert("Error al cotizar el producto.");
@@ -112,10 +113,13 @@ export default function SearchPage() {
               <Typography variant="h6">{product.descripcion}</Typography>
               <Typography>Marca: {product.marca}</Typography>
               <Typography>Modelo: {product.modelo}</Typography>
-              <Typography>Stock: {product.stock_f}</Typography>
+              {product.stock_f > 0 ?(
+                <Typography>Stock: DISPONIBLE</Typography>
+              ) : (
+                <Typography>Stock: NO DISPONIBLE</Typography>
+              )}
               {cotizaciones > 0 ? (
                 <>
-                  <Typography>Precio: ${product.vvta_us}</Typography>
                   {product.vvta_us > 0 ? (
                     <Button
                       variant="contained"

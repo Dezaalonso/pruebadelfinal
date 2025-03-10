@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./css/Signup.css";
 import axios from "axios";
@@ -10,6 +10,10 @@ function SignUp() {
     username: "",
     password: ""
   });
+
+  useEffect(() => {
+        window.scrollTo(0, 0);
+      });
   
   const [errorMessage, setErrorMessage] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);

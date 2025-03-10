@@ -14,6 +14,10 @@ function Nosotros() {
   };
 
   useEffect(() => {
+        window.scrollTo(0, 0);
+      });
+
+  useEffect(() => {
     const apiUrl = "http://127.0.0.1:5001/data";
 
     const fetchData = async () => {

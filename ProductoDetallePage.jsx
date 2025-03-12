@@ -13,6 +13,7 @@ function ProductoDetallePage() {
   const { tipo, nombre } = useParams();
   const [selectedImage, setSelectedImage] = useState(product?.imagen);
   const { addToCart } = useShoppingCart(); // Access addToCart function
+  const language = (localStorage.getItem("language") || "0");
 
   const [formData, setFormData] = useState({
     correo: "",
@@ -55,6 +56,43 @@ function ProductoDetallePage() {
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const translations = {
+    "0": { // Spanish
+      Serie: "Serie: ",
+      Año: "Año de Fabricación: ",
+      Horas: "Nº Horas: ",
+      Dolares: "Precio USD: ",
+      IGV: "IGV % USD: ",
+      Soles: "Total S/.: ",
+      Carrito: "Agregar al carrito",
+      Volver: "Volver",
+      Compartir: "Compartir",
+      Consulta_producto: "Consultar sobre este producto",
+      Correo: "Correo",
+      Nombre: "Nombres",
+      Telefono: "Teléfono",
+      Consulta: "Consulta",
+      Enviar: "Enviar Consulta"
+    },
+    "1": { // English
+      Serie: "Serie: ",
+      Año: "Year of production: ",
+      Horas: "Nº Hours: ",
+      Dolares: "Price USD: ",
+      IGV: "IGV % USD: ",
+      Soles: "Total S/.: ",
+      Carrito: "Add to cart",
+      Volver: "Go back",
+      Compartir: "Share",
+      Consulta_producto: "Get in touch about this product",
+      Correo: "Email",
+      Nombre: "Names",
+      Telefono: "Phone",
+      Consulta: "Consultation",
+      Enviar: "Send consultation"
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -111,40 +149,40 @@ function ProductoDetallePage() {
           className="product-description"
           dangerouslySetInnerHTML={{ __html: product.descripcion }}
         />
-        <p className="price">Serie: {product.serie}</p>
-        <p className="price">Año: {product.año}</p>
-        <p className="price">Horas: {product.horas}</p>
-        <p className="price">Precio USD: {product.precio}$</p>
-        <p className="price">Igv USD: {product.precio * product.igv}$</p>
-        <p className="price">Precio s/: {product.precio * product.venta}$</p>
+        <p className="price">{translations[language].Serie} {product.serie}</p>
+        <p className="price">{translations[language].Año} {product.año}</p>
+        <p className="price">{translations[language].Horas} {product.horas}</p>
+        <p className="price">{translations[language].Dolares} {product.precio}$</p>
+        <p className="price">{translations[language].IGV} {product.precio * product.igv}$</p>
+        <p className="price">{translations[language].Soles} {product.precio * product.venta}$</p>
 
         <Button
           variant="contained"
           color="secondary"
           onClick={() => addToCart(product)}
         >
-          Agregar al carrito
+          {translations[language].Carrito}
         </Button>
 
         <p> </p>
 
         <Button variant="contained" color="primary" onClick={() => window.history.back()}>
-          Volver
+        {translations[language].Volver}
         </Button>
 
         <p> </p>
 
         <Button variant="contained" color="success" onClick={handleShare}>
-          Compartir
+        {translations[language].Compartir}
         </Button>
       </div>
 
       {/* Inquiry Form */}
     <div className="inquiry-form">
-      <h2>Consulta sobre este producto</h2>
+      <h2>{translations[language].Consulta_producto}</h2>
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Correo"
+          label={translations[language].Correo}
           type="email"
           name="correo"
           value={formData.correo}
@@ -154,7 +192,7 @@ function ProductoDetallePage() {
           margin="dense"
         />
         <TextField
-          label="Nombre"
+          label={translations[language].Nombre}
           type="text"
           name="nombre"
           value={formData.nombre}
@@ -164,7 +202,7 @@ function ProductoDetallePage() {
           margin="dense"
         />
         <TextField
-          label="Teléfono"
+          label={translations[language].Telefono}
           type="tel"
           name="telefono"
           value={formData.telefono}
@@ -174,7 +212,7 @@ function ProductoDetallePage() {
           margin="dense"
         />
         <TextField
-          label="Consulta"
+          label={translations[language].Consulta}
           name="consulta"
           value={formData.consulta}
           onChange={handleInputChange}
@@ -185,7 +223,7 @@ function ProductoDetallePage() {
           margin="dense"
         />
         <Button type="submit" variant="contained" color="primary">
-          Enviar Consulta
+        {translations[language].Enviar}
         </Button>
       </form>
     </div>

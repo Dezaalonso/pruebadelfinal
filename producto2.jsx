@@ -6,12 +6,21 @@ function Producto2() {
   const [itemsMap, setItemsMap] = useState(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const language = (localStorage.getItem("language") || "0");
+
+  const translations = {
+    "0": { // Spanish
+      Maquinarias: "Maquinarias",
+      Cantidad: "Cantidad"
+    },
+    "1": { // English
+      Maquinarias: "Machinary",
+      Cantidad: "quantity"
+    }
+  };
 
   useEffect(() => {
-        window.scrollTo(0, 0);
-      });
-
-  useEffect(() => {
+    window.scrollTo(0, 0);
     const apiUrl = "http://127.0.0.1:5001/info";
 
     const fetchData = async () => {
@@ -25,7 +34,7 @@ function Producto2() {
         // Group items by tipo.nombre
         const map = new Map();
         data.forEach(item => {
-          const tipoNombre = item.tipo.nombre;
+          const tipoNombre = language === "0" ? item.tipo.nombre : item.tipo.nombre_ing;
           const tipoImagen = item.tipo.imagen;
 
           if (!map.has(tipoNombre)) {
@@ -72,7 +81,7 @@ function Producto2() {
 
   return (
     <div>
-      <h1>Maquinarias</h1>
+      <h1>{translations[language].Maquinarias}</h1>
       <div className="cards">
         {Array.from(itemsMap.entries()).map(([tipoNombre, { items, tipoImagen }], index) => (
           <Link
@@ -88,7 +97,7 @@ function Producto2() {
                 alt={tipoNombre}
                 className="card-image"
               />
-              <p className="product-count">Cantidad: {items.length}</p>
+              <p className="product-count">{translations[language].Cantidad} {items.length}</p>
             </div>
           </Link>
         ))}

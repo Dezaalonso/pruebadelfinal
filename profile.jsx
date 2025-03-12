@@ -26,6 +26,28 @@ function ClientProfile() {
   const classes = useStyles();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const language = (localStorage.getItem("language") || "0");
+
+    const translations = {
+        "0": { // Spanish
+            Perfil: "Editar Perfil",
+            Nombre: "Nombre",
+            Correo: "Correo",
+            Direccion : "Direccion",
+            Telefono: "Telefono",
+            Cambios: "Guardar Cambios",
+            Sesion: "Cerrar Sesion"
+        },
+        "1": { // English
+          Perfil: "Edit Profile",
+          Nombre: "Name",
+          Correo: "Email",
+          Direccion : "Addres",
+          Telefono: "Phone",
+          Cambios: "Save Changes",
+          Sesion: "Log Out"
+        }
+      };
 
   const [client, setClient] = useState({
     nombre: "",
@@ -115,41 +137,41 @@ function ClientProfile() {
 
   return (
     <Paper className={classes.paper}>
-      <Typography variant="h4">Editar Perfil</Typography>
+      <Typography variant="h4">{translations[language].Perfil}</Typography>
       <form className={classes.form} onSubmit={handleSubmit}>
         <TextField
-          label="Nombre"
+          label={translations[language].Nombre}
           name="nombre"
           value={client.nombre}
           onChange={handleChange}
           fullWidth
         />
         <TextField
-          label="Correo"
+          label={translations[language].Correo}
           name="email"
           value={client.email}
           onChange={handleChange}
           fullWidth
         />
         <TextField
-          label="Dirección"
+          label={translations[language].Direccion}
           name="direccion"
           value={client.direccion}
           onChange={handleChange}
           fullWidth
         />
         <TextField
-          label="Teléfono"
+          label={translations[language].Telefono}
           name="telefono"
           value={client.telefono}
           onChange={handleChange}
           fullWidth
         />
         <Button variant="contained" color="primary" type="submit">
-          Guardar Cambios
+        {translations[language].Cambios}
         </Button>
         <Button variant="contained" color="secondary" onClick={handleLogout}>
-          Cerrar Sesión
+        {translations[language].Sesion}
         </Button>
       </form>
     </Paper>

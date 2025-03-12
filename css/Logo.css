@@ -38,6 +38,22 @@
   transition: color 0.3s ease, border-color 0.3s ease; /* Smooth hover animation */
 }
 
+.language-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  width: 50px;
+  object-fit: contain; /* Ensures the logo scales properly */
+  
+}
+
+.language-icon {
+  width: 50px;
+  height: 30px;
+  
+}
+
 .login .login-link:hover {
   color: #04AA6D; /* Change color on hover */
   border-color: #04AA6D; /* Add a green border on hover */

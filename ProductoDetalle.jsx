@@ -9,10 +9,24 @@ function ProductoDetalle() {
   const location = useLocation();
   const { products } = location.state || {};
   const { addToCart } = useShoppingCart(); // Access addToCart function
+  const language = (localStorage.getItem("language") || "0");
 
   if (!products || products.length === 0) {
     return <p>No products available for "{tipo}".</p>;
   }
+
+  const translations = {
+    "0": { // Spanish
+      Precio: "Precio:",
+      Detalles: "Ver detalles",
+      Carro: "Añadir al carro"
+    },
+    "1": { // English
+      Precio: "Price:",
+      Detalles: "See more details",
+      Carro: "Add to cart"
+    }
+  };
 
   useEffect(() => {
         window.scrollTo(0, 0);
@@ -30,20 +44,20 @@ function ProductoDetalle() {
               alt={product.descripcion}
               className="product-image"
             />
-            <p>Precio: {product.precio}</p>
+            <p>{translations[language].Precio} {product.precio}</p>
             <Button
               variant="contained"
               color="secondary"
               onClick={() => addToCart(product)} // Add product to cart
             >
-              Añadir al carro
+              {translations[language].Carro}
             </Button>
             <Link
               to={`/detalle-producto/${tipo}/${product.nombre}`}
               state={{ product }}
               style={{ textDecoration: "none" }}
             >
-              <Button variant="outlined">Ver detalles</Button>
+              <Button variant="outlined">{translations[language].Detalles}</Button>
             </Link>
           </div>
         ))}

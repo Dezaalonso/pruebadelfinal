@@ -5,6 +5,7 @@ function Nosotros() {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const language = (localStorage.getItem("language") || "0");
 
   const handleScroll = (id) => {
     const section = document.getElementById(id);
@@ -13,11 +14,21 @@ function Nosotros() {
     }
   };
 
-  useEffect(() => {
-        window.scrollTo(0, 0);
-      });
+  const translations = {
+    "0": { // Spanish
+      NOSOTROS: "ACERCA DE NOSOTROS",
+      VISION: "NUESTRA VISION",
+      MISION: "NUESTRA MISION"
+    },
+    "1": { // English
+      NOSOTROS: "ABOUT US",
+      VISION: "OUR VISION",
+      MISION: "OUR MISION"
+    }
+  };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const apiUrl = "http://127.0.0.1:5001/data";
 
     const fetchData = async () => {
@@ -51,13 +62,13 @@ function Nosotros() {
       {/* Secondary Top Bar */}
       <nav className="top-bar">
         <a onClick={() => handleScroll("section1")} className="link">
-          ACERCA DE NOSOTROS
+          {translations[language].NOSOTROS}
         </a>
         <a onClick={() => handleScroll("section2")} className="link">
-          NUESTRA VISION
+          {translations[language].VISION}
         </a>
         <a onClick={() => handleScroll("section3")} className="link">
-          NUESTRA MISION
+          {translations[language].MISION}
         </a>
       </nav>
 
@@ -65,12 +76,12 @@ function Nosotros() {
       <div id="section1" className="section section-with-image">
         <div className="text-content1">
           <h3>-----</h3>
-          <h2>{content.aboutUs.title}</h2>
-          <div dangerouslySetInnerHTML={{ __html: content.aboutUs.paragraphs }} />
+          <h2>{language == 0 ? content.aboutUs.title: content.aboutUs.title_ing}</h2>
+          <div dangerouslySetInnerHTML={{ __html: language == 0 ? content.aboutUs.paragraphs: content.aboutUs.paragraphs_ing}} />
         </div>
         <div className="image-content">
           <img
-            src={`http://localhost/react/secciones/${content.aboutUs.image}`}
+            src={`http://localhost:3000/react/secciones/${content.aboutUs.image}`}
             alt="About Us"
           />
         </div>
@@ -80,12 +91,12 @@ function Nosotros() {
       {/* Section 2: Vision */}
       <div id="section2" className="section section-with-image">
         <div className="text-content">
-          <h2>{content.vision.title}</h2>
-          <div dangerouslySetInnerHTML={{ __html: content.vision.paragraphs }} />
+          <h2>{language == 0 ? content.vision.title: content.vision.title_ing}</h2>
+          <div dangerouslySetInnerHTML={{ __html: language == 0 ? content.vision.paragraphs: content.vision.paragraphs_ing }} />
         </div>
         <div className="image-content">
           <img
-            src={`http://localhost/react/secciones/${content.vision.image}`}
+            src={`http://localhost:3000/react/secciones/${content.vision.image}`}
             alt="Our Vision"
           />
         </div>
@@ -95,12 +106,12 @@ function Nosotros() {
       {/* Section 3: Mission */}
       <div id="section3" className="section section-with-image">
         <div className="text-content">
-          <h2>{content.mission.title}</h2>
-          <div dangerouslySetInnerHTML={{ __html: content.mission.paragraphs }} />
+          <h2>{language == 0 ? content.mission.title: content.mission.title_ing}</h2>
+          <div dangerouslySetInnerHTML={{ __html: language == 0 ? content.mission.paragraphs: content.mission.paragraphs_ing }} />
         </div>
         <div className="image-content">
           <img
-            src={`http://localhost/react/secciones/${content.mission.image}`}
+            src={`http://localhost:3000/react/secciones/${content.mission.image}`}
             alt="Our Mission"
           />
         </div>

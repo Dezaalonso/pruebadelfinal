@@ -81,7 +81,7 @@ function Nosotros() {
         </div>
         <div className="image-content">
           <img
-            src={`http://localhost:3000/react/secciones/${content.aboutUs.image}`}
+            src={`http://localhost:3000/secciones/${content.aboutUs.image}`}
             alt="About Us"
           />
         </div>
@@ -96,7 +96,7 @@ function Nosotros() {
         </div>
         <div className="image-content">
           <img
-            src={`http://localhost:3000/react/secciones/${content.vision.image}`}
+            src={`http://localhost:3000/secciones/${content.vision.image}`}
             alt="Our Vision"
           />
         </div>
@@ -111,7 +111,7 @@ function Nosotros() {
         </div>
         <div className="image-content">
           <img
-            src={`http://localhost:3000/react/secciones/${content.mission.image}`}
+            src={`http://localhost:3000/secciones/${content.mission.image}`}
             alt="Our Mission"
           />
         </div>

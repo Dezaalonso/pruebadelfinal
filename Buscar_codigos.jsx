@@ -15,6 +15,34 @@ export default function SearchPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [cotizaciones, setCotizaciones] = useState(0);
+  const language = (localStorage.getItem("language") || "0");
+
+  const translations = {
+    "0": { // Spanish
+      Productos: "Buscar Producto por Código",
+      Buscar: "Ingrese el código exacto del producto porfavor",
+      Tipo: "Buscar",
+      Marca: "Marca:",
+      Modelo: "Modelo:",
+      StockD: "Stock: Disponible",
+      StockN: "Stock: No Disponible",
+      Cotizar: "Cotizar Producto",
+      Asesor: "Contactarse con un asesor",
+      Disponibles: "No tienes cotizaciones disponibles."
+    },
+    "1": { // English
+      Productos: "Search Product by Code",
+      Buscar: "Introduce the exact code of the product please",
+      Tipo: "Search",
+      Marca: "Brand:",
+      Modelo: "Model:",
+      StockD: "Stock: Available",
+      StockN: "Stock: Not Available",
+      Cotizar: "Make a Quote",
+      Asesor: "Contact a salesperson",
+      Disponibles: "No more quotes available."
+    }
+  };
 
   useEffect(() => {
     const storedCotizaciones = localStorage.getItem("cotizaciones");
@@ -92,16 +120,16 @@ export default function SearchPage() {
 
   return (
     <div className="buscar">
-      <h1>Buscar Producto por Código</h1>
+      <h1>{translations[language].Productos}</h1>
       <div className="input-container">
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Ingrese el código exacto del producto porfavor"
+          placeholder={translations[language].Buscar}
         />
       </div>
-      <button onClick={handleSearch}>Buscar</button>
+      <button onClick={handleSearch}>{translations[language].Tipo}</button>
 
       {loading && <CircularProgress />}
       {error && <Typography color="error">{error}</Typography>}
@@ -111,12 +139,12 @@ export default function SearchPage() {
           <Card key={product.cod_producto} className="result-card">
             <CardContent>
               <Typography variant="h6">{product.descripcion}</Typography>
-              <Typography>Marca: {product.marca}</Typography>
-              <Typography>Modelo: {product.modelo}</Typography>
+              <Typography>{translations[language].Marca} {product.marca}</Typography>
+              <Typography>{translations[language].Modelo} {product.modelo}</Typography>
               {product.stock_f > 0 ?(
-                <Typography>Stock: DISPONIBLE</Typography>
+                <Typography>{translations[language].StockD}</Typography>
               ) : (
-                <Typography>Stock: NO DISPONIBLE</Typography>
+                <Typography>{translations[language].StockN}</Typography>
               )}
               {cotizaciones > 0 ? (
                 <>
@@ -126,7 +154,7 @@ export default function SearchPage() {
                       color="primary"
                       onClick={() => handleCotizar(product)}
                     >
-                      Cotizar Producto
+                      {translations[language].Cotizar}
                     </Button>
                   ) : (
                     <Button
@@ -134,13 +162,13 @@ export default function SearchPage() {
                       color="secondary"
                       onClick={() => handleCotizar(product)}
                     >
-                      Contactarse con un Asesor
+                      {translations[language].Asesor}
                     </Button>
                   )}
                 </>
               ) : (
                 <Typography color="textSecondary">
-                  No tienes cotizaciones disponibles.
+                  {translations[language].Disponibles}
                 </Typography>
               )}
             </CardContent>

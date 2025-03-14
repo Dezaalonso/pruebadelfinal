@@ -9,6 +9,20 @@ import "./css/producto1.css"; // Import the CSS file
 export default function ProductGroups() {
   const [groups, setGroups] = useState([]);
   const navigate = useNavigate();
+  const language = (localStorage.getItem("language") || "0");
+
+  const translations = {
+    "0": { // Spanish
+      Productos: "Productos y Repuestos",
+      Buscar: "Buscar con Codigos",
+      Tipo: "Buscar tipos de productos"
+    },
+    "1": { // English
+      Productos: "Products and Spare Parts",
+      Buscar: "Search with Codes",
+      Tipo: "Search types of products in spanish"
+    }
+  };
 
   useEffect(() => {
         window.scrollTo(0, 0);
@@ -32,12 +46,12 @@ export default function ProductGroups() {
   return (
     <div className="container">
       <div className="row">
-        <h1>Productos y Repuestos</h1>
-        <button onClick={(Buscar_Codigos)}>Buscar con codigos</button>
+        <h1>{translations[language].Productos}</h1>
+        <button onClick={(Buscar_Codigos)}>{translations[language].Buscar}</button>
       </div>
       
       <ReactSearchBox
-        placeholder="Buscar tipos de productos..."
+        placeholder={translations[language].Tipo}
         data={groups.map((group) => ({
           key: group.familia,
           value: group.nom_familia

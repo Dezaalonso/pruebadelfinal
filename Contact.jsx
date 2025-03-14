@@ -22,18 +22,18 @@ function Contactos() {
   const translations = {
     "0": {
       Contactenos: "Contáctenos",
-      Correo: "Correo:",
-      Nombre: "Nombre o Empresa:",
-      Telefono: "Teléfono:",
-      Consulta: "Consulta:",
+      correo: "Correo:",
+      name: "Nombre o Empresa:",
+      phone: "Teléfono:",
+      consulta: "Consulta:",
       Enviar: "Enviar",
     },
     "1": {
       Contactenos: "Contact Us",
-      Correo: "Email:",
-      Nombre: "Name or Company:",
-      Telefono: "Phone:",
-      Consulta: "Consultation:",
+      correo: "Email:",
+      name: "Name or Company:",
+      phone: "Phone:",
+      consulta: "Consultation:",
       Enviar: "Send",
     },
   };
@@ -87,7 +87,7 @@ function Contactos() {
       <form onSubmit={handleSubmit}>
         {Object.entries(formData).map(([key, value]) => (
           <div key={key}>
-            <label htmlFor={key}>{translations[language][key.charAt(0).toUpperCase() + key.slice(1)]}</label>
+            <label htmlFor={key}>{translations[language][key]}</label>
             {key === "consulta" ? (
               <textarea
                 rows="6"
@@ -95,7 +95,7 @@ function Contactos() {
                 id={key}
                 value={value}
                 onChange={handleChange}
-                placeholder={translations[language][key.charAt(0).toUpperCase() + key.slice(1)]}
+                placeholder={translations[language][key]}
               />
             ) : (
               <input
@@ -103,7 +103,7 @@ function Contactos() {
                 id={key}
                 value={value}
                 onChange={handleChange}
-                placeholder={translations[language][key.charAt(0).toUpperCase() + key.slice(1)]}
+                placeholder={translations[language][key]}
               />
             )}
             {errors[key] && <p className="error">{errors[key]}</p>}
@@ -116,4 +116,3 @@ function Contactos() {
 }
 
 export default Contactos;
-  

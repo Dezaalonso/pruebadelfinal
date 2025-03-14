@@ -25,7 +25,7 @@ function TopBar() {
     },
     "1": { // English
       Inicio: "Home",
-      Repuestos: "spare parts",
+      Repuestos: "Spare Parts",
       Maquinaria: "Machinary",
       Nosotros: "Us",
       Contactanos: "Contact Us",

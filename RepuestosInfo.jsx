@@ -14,21 +14,38 @@ export default function RepuestosInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cotizaciones, setCotizaciones] = useState(0);
-
+  
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const language = localStorage.getItem("language") || "0";
+
+  const translations = {
+    "0": {
+      Productos: "Productos y Repuestos",
+      Marca: "Marca:",
+      Modelo: "Modelo:",
+      StockD: "Stock: Disponible",
+      StockN: "Stock: No Disponible",
+      Cotizar: "Cotizar Producto",
+      Asesor: "Contactarse con un asesor",
+    },
+    "1": {
+      Productos: "Products and Spare Parts",
+      Marca: "Brand:",
+      Modelo: "Model:",
+      StockD: "Stock: Available",
+      StockN: "Stock: Not Available",
+      Cotizar: "Make a Quote",
+      Asesor: "Contact a salesperson",
+    },
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   useEffect(() => {
-    const storedCotizaciones = localStorage.getItem("cotizaciones");
-    if (storedCotizaciones) {
-      setCotizaciones(parseInt(storedCotizaciones, 10));
-    }
-
     fetch(`http://127.0.0.1:5001/familia/${familiaId}`)
       .then((res) => {
         if (!res.ok) {
@@ -47,38 +64,31 @@ export default function RepuestosInfo() {
   }, [familiaId]);
 
   const handleCotizar = async (product) => {
-    if (cotizaciones <= 0) return;
 
-    const id = localStorage.getItem("id");
-    if (!id) {
-      alert("No ID found in localStorage.");
-      return;
-    }
+    const payload = {
+      userId: "",
+      productId: product.cod_producto,
+      description: product.descripcion,
+      brand: product.marca,
+      model: product.modelo,
+      stock: product.stock_f,
+      price: product.vvta_us,
+    };
 
     try {
-      const response = await fetch("http://127.0.0.1:5001/decrease_cotizacion", {
+      const response = await fetch("http://127.0.0.1:5001/cotizaciones", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }), // Correctly sending as an object
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update cotizaciones.");
+        throw new Error("Failed to save cotización.");
       }
 
-      const newCotizaciones = cotizaciones - 1;
-      setCotizaciones(newCotizaciones);
-      localStorage.setItem("cotizaciones", newCotizaciones.toString());
-
-      const storedList = localStorage.getItem("cotizacionesList");
-      const cotizacionesList = storedList ? JSON.parse(storedList) : [];
-      cotizacionesList.push(product);
-      localStorage.setItem("cotizacionesList", JSON.stringify(cotizacionesList));
-
       alert("Producto agregado a cotización.");
-      window.location.reload(false)
     } catch (error) {
-      console.error("Error updating cotizaciones:", error);
+      console.error("Error saving cotización:", error);
       alert("Error al cotizar el producto.");
     }
   };
@@ -97,35 +107,26 @@ export default function RepuestosInfo() {
 
   return (
     <div className="containerr">
-      <h1>Productos y Repuestos</h1>
+      <h1>{translations[language].Productos}</h1>
       <div className="product-list">
         {currentProducts.map((product) => (
           <Card key={product.cod_producto} className="product-card">
             <CardContent>
               <Typography variant="h6">{product.descripcion}</Typography>
-              <Typography>Marca: {product.marca}</Typography>
-              <Typography>Modelo: {product.modelo}</Typography>
-              <Typography>Stock: {product.stock_f}</Typography>
-              {cotizaciones > 0 && (
-                <>
-                  {product.vvta_us > 0 &&(
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleCotizar(product)}
-                  >
-                    Cotizar Producto
-                  </Button>)}
-                  {product.vvta_us == 0 &&(
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleCotizar(product)}
-                  >
-                    Contactarse con un Asesor 
-                  </Button>)}
-                </>
+              <Typography>{translations[language].Marca} {product.marca}</Typography>
+              <Typography>{translations[language].Modelo} {product.modelo}</Typography>
+              {product.stock_f > 0 ? (
+                <Typography>{translations[language].StockD}</Typography>
+              ) : (
+                <Typography>{translations[language].StockN}</Typography>
               )}
+              <Button
+                variant="contained"
+                color={product.vvta_us > 0 ? "primary" : "secondary"}
+                onClick={() => handleCotizar(product)}
+              >
+                {product.vvta_us > 0 ? translations[language].Cotizar : translations[language].Asesor}
+              </Button>
             </CardContent>
           </Card>
         ))}

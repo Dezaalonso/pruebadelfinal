@@ -64,7 +64,7 @@ function Logo() {
 
       <div className="language-toggle"> 
         <img 
-          src={language === "0" ? "http://localhost:3000/react/imagenes/ingles.png" : "http://localhost:3000/react/imagenes/espanol.png"} 
+          src={language === "0" ? "http://localhost:3000/imagenes/ingles.png" : "http://localhost:3000/imagenes/espanol.png"} 
           alt="Language Toggle" 
           onClick={changeLanguage}
           className="language-icon"

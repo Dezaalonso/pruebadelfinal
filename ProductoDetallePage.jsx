@@ -124,7 +124,7 @@ function ProductoDetallePage() {
         {images.map((img, index) => (
           <img
             key={index}
-            src={`http://localhost:3000/react/tractores/${img}`}
+            src={`http://localhost:3000/tractores/${img}`}
             alt={`Thumbnail ${index + 1}`}
             onClick={() => setSelectedImage(img)}
             style={{
@@ -137,7 +137,7 @@ function ProductoDetallePage() {
       {/* Main Image */}
       <div className="product-image-container">
         <img
-          src={`http://localhost:3000/react/tractores/${selectedImage}`}
+          src={`http://localhost:3000/tractores/${selectedImage}`}
           alt={product.descripcion}
         />
       </div>

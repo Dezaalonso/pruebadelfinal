@@ -24,7 +24,7 @@ function Home() {
         const response = await fetch("http://127.0.0.1:5001/banner");
         if (!response.ok) throw new Error("Failed to fetch banners");
         const data = await response.json();
-        setBanners(data.map(item => `http://localhost:3000/react/banners/${item.banner}`));
+        setBanners(data.map(item => `http://localhost:3000/banners/${item.banner}`));
       } catch (err) {
         setErrorBanners(err.message);
       } finally {
@@ -39,7 +39,7 @@ function Home() {
         const data = await response.json();
         setTractors(data.map(item => ({
           name: item.nombre,
-          image: `http://localhost:3000/react/tractores/${item.imagen}`,
+          image: `http://localhost:3000/tractores/${item.imagen}`,
           price: item.precio
         })));
       } catch (err) {
@@ -89,7 +89,7 @@ function Home() {
             <div className="tractor-card" key={index}>
               <img src={tractor.image} alt={tractor.name} className="tractor-image" />
               <h2 className="tractor-name">{tractor.name}</h2>
-              <p className="tractor-price">{tractor.price}</p>
+              <p className="tractor-price">${tractor.price}</p>
             </div>
           ))}
         </div>

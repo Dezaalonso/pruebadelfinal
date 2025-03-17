@@ -47,6 +47,7 @@ function Producto2() {
           }
 
           map.get(tipoNombre).items.push({
+            cod: item.datos.cod_tractores,
             nombre: item.datos.nombre,
             imagen: item.datos.imagen,
             imagen2: item.datos.imagen2,

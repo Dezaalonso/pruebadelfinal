@@ -13,12 +13,12 @@ export default function RepuestosInfo() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cotizaciones, setCotizaciones] = useState(0);
-  
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const language = localStorage.getItem("language") || "0";
+  
+  // Replace this with actual client ID if needed
+  const cod_cliente = localStorage.getItem("cod_cliente") || "12345"; 
 
   const translations = {
     "0": {
@@ -47,36 +47,27 @@ export default function RepuestosInfo() {
 
   useEffect(() => {
     fetch(`http://127.0.0.1:5001/familia/${familiaId}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Error fetching products");
-        }
-        return res.json();
-      })
+      .then((res) => res.ok ? res.json() : Promise.reject("Error fetching products"))
       .then((data) => {
         setProducts(data);
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message);
+        setError(err);
         setLoading(false);
       });
   }, [familiaId]);
 
   const handleCotizar = async (product) => {
-
     const payload = {
-      userId: "",
-      productId: product.cod_producto,
-      description: product.descripcion,
-      brand: product.marca,
-      model: product.modelo,
-      stock: product.stock_f,
-      price: product.vvta_us,
+      modelo: product.modelo,
+      precio: product.vvta_us,
+      cod_cliente: cod_cliente,
+      fecha_creacion: new Date().toISOString().split("T")[0], // Format YYYY-MM-DD
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:5001/cotizaciones", {
+      const response = await fetch("http://127.0.0.1:5001/guardar_cotizacion", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -96,30 +87,17 @@ export default function RepuestosInfo() {
   if (loading) return <CircularProgress />;
   if (error) return <Typography color="error">{error}</Typography>;
 
-  // Pagination Logic
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-  };
-
   return (
     <div className="containerr">
       <h1>{translations[language].Productos}</h1>
       <div className="product-list">
-        {currentProducts.map((product) => (
+        {products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((product) => (
           <Card key={product.cod_producto} className="product-card">
             <CardContent>
               <Typography variant="h6">{product.descripcion}</Typography>
               <Typography>{translations[language].Marca} {product.marca}</Typography>
               <Typography>{translations[language].Modelo} {product.modelo}</Typography>
-              {product.stock_f > 0 ? (
-                <Typography>{translations[language].StockD}</Typography>
-              ) : (
-                <Typography>{translations[language].StockN}</Typography>
-              )}
+              <Typography>{product.stock_f > 0 ? translations[language].StockD : translations[language].StockN}</Typography>
               <Button
                 variant="contained"
                 color={product.vvta_us > 0 ? "primary" : "secondary"}
@@ -132,11 +110,10 @@ export default function RepuestosInfo() {
         ))}
       </div>
 
-      {/* Pagination Controls */}
       <Pagination
         count={Math.ceil(products.length / itemsPerPage)}
         page={currentPage}
-        onChange={handlePageChange}
+        onChange={(event, value) => setCurrentPage(value)}
         color="primary"
         className="pagination"
       />

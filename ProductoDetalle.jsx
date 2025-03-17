@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { useShoppingCart } from "./ShoppingCartContext"; // Import the context
+import React, { useEffect } from "react";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
+import { useShoppingCart } from "./ShoppingCartContext";
 import "./css/ProductoDetalle.css";
 import Button from "@mui/material/Button";
 
@@ -8,20 +8,21 @@ function ProductoDetalle() {
   const { tipo } = useParams();
   const location = useLocation();
   const { products } = location.state || {};
-  const { addToCart } = useShoppingCart(); // Access addToCart function
-  const language = (localStorage.getItem("language") || "0");
+  const { addToCart } = useShoppingCart();
+  const navigate = useNavigate();
+  const language = localStorage.getItem("language") || "0";
 
   if (!products || products.length === 0) {
     return <p>No products available for "{tipo}".</p>;
   }
 
   const translations = {
-    "0": { // Spanish
+    "0": {
       Precio: "Precio:",
       Detalles: "Ver detalles",
       Carro: "Añadir al carro"
     },
-    "1": { // English
+    "1": {
       Precio: "Price:",
       Detalles: "See more details",
       Carro: "Add to cart"
@@ -29,15 +30,20 @@ function ProductoDetalle() {
   };
 
   useEffect(() => {
-        window.scrollTo(0, 0);
-      });
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
       <h1>{tipo}</h1>
       <div className="product-detail-cards">
         {products.map((product, index) => (
-          <div key={index} className="product-detail-card">
+          <div 
+            key={index} 
+            className="product-detail-card" 
+            onClick={() => navigate(`/detalle-producto/${tipo}/${product.nombre}`, { state: { product } })}
+            style={{ cursor: "pointer" }}
+          >
             <h2>{product.nombre}</h2>
             <img
               src={`http://localhost:3000/tractores/${product.imagen}`}
@@ -48,17 +54,13 @@ function ProductoDetalle() {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => addToCart(product)} // Add product to cart
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent navigating when clicking the button
+                addToCart(product);
+              }}
             >
               {translations[language].Carro}
             </Button>
-            <Link
-              to={`/detalle-producto/${tipo}/${product.nombre}`}
-              state={{ product }}
-              style={{ textDecoration: "none" }}
-            >
-              <Button variant="outlined">{translations[language].Detalles}</Button>
-            </Link>
           </div>
         ))}
       </div>

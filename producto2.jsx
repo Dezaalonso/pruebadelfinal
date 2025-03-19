@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import './css/producto2.css'; // Import the CSS file
+import './css/producto2.css';
 
 function Producto2() {
-  const [itemsMap, setItemsMap] = useState(new Map());
+  const [tipos, setTipos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const language = (localStorage.getItem("language") || "0");
+  const language = localStorage.getItem("language") || "0";
 
   const translations = {
     "0": { // Spanish
@@ -14,14 +14,14 @@ function Producto2() {
       Cantidad: "Cantidad"
     },
     "1": { // English
-      Maquinarias: "Machinary",
-      Cantidad: "quantity"
+      Maquinarias: "Machinery",
+      Cantidad: "Quantity"
     }
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const apiUrl = "http://127.0.0.1:5001/info";
+    const apiUrl = "http://127.0.0.1:5001/tractores_tipo"; // API for fetching only tipo data
 
     const fetchData = async () => {
       try {
@@ -30,38 +30,7 @@ function Producto2() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-
-        // Group items by tipo.nombre
-        const map = new Map();
-        data.forEach(item => {
-          const tipoNombre = language === "0" ? item.tipo.nombre : item.tipo.nombre_ing;
-          const tipoImagen = item.tipo.imagen;
-
-          if (!map.has(tipoNombre)) {
-            map.set(tipoNombre, { items: [], tipoImagen });
-          }
-
-          // Check if the image is missing or empty, then set default
-          if (!item.datos.imagen || item.datos.imagen.trim() === "") {
-            item.datos.imagen = 'blanco.jpg';
-          }
-
-          map.get(tipoNombre).items.push({
-            cod: item.datos.cod_tractores,
-            nombre: item.datos.nombre,
-            imagen: item.datos.imagen,
-            imagen2: item.datos.imagen2,
-            imagen3: item.datos.imagen3,
-            serie: item.datos.serie,
-            descripcion: item.datos.caracteristicas,
-            precio: item.datos.precio,
-            año: item.datos.año,
-            horas: item.datos.horas,
-            venta: item.datos.venta,
-            igv: item.datos.igv
-          });
-        });
-        setItemsMap(map);
+        setTipos(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -84,21 +53,19 @@ function Producto2() {
     <div>
       <h1>{translations[language].Maquinarias}</h1>
       <div className="cards">
-        {Array.from(itemsMap.entries()).map(([tipoNombre, { items, tipoImagen }], index) => (
+        {tipos.map((tipo) => (
           <Link
-            to={`/producto/${tipoNombre}`}
-            key={index}
-            state={{ products: items }}
+            to={`/producto/${tipo.cod_catractores}`}
+            key={tipo.codigo}
             className="card-link"
           >
             <div className="card"> 
-              <h2>{tipoNombre}</h2>
+              <h2>{language === "0" ? tipo.nombre : tipo.nombre_ing}</h2>
               <img
-                src={`http://localhost/react/categoria-tractores/${tipoImagen}`} // Use tipoImagen for the card image
-                alt={tipoNombre}
+                src={`/categoria-tractores/${tipo.imagen}`}
+                alt={tipo.nombre}
                 className="card-image"
               />
-              <p className="product-count">{translations[language].Cantidad} {items.length}</p>
             </div>
           </Link>
         ))}

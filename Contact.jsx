@@ -61,7 +61,7 @@ function Contactos() {
       const payload = { ...formData, header: "Consulta" };
 
       try {
-        const response = await fetch("http://127.0.0.1:5001/consulta", {
+        const response = await fetch("http://127.0.0.1:5001/contactenos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),

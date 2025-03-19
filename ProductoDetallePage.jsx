@@ -1,44 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useShoppingCart } from "./ShoppingCartContext";
 import "./css/ProductoDetallePage.css";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 
 function ProductoDetallePage() {
-  const location = useLocation();
-  const { product } = location.state || {};
   const { tipo, nombre } = useParams();
-  const [selectedImage, setSelectedImage] = useState(product?.imagen);
-  const { addToCart } = useShoppingCart(); // Access addToCart function
-  const language = (localStorage.getItem("language") || "0");
+  const { addToCart } = useShoppingCart();
+  const language = localStorage.getItem("language") || "0";
+  const [data, setData] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  // Default image if no product image is found
+  const defaultImage = "/tractores/default.jpg";
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5001/tractore/${nombre}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product details");
+        }
+        const data = await response.json();
+        setData(data);
+        setSelectedImage(data[0].imagen || defaultImage);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [tipo, nombre]);
+
+
 
   const [formData, setFormData] = useState({
     correo: "",
-    nombre: "",
-    telefono: "",
+    header: "",
+    name: "",
+    phone: "",
     consulta: "",
   });
-
-  useEffect(() => {
-      window.scrollTo(0, 0);
-    });
-
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
-
-  if (!product) {
-    return <p>Product details not available for "{nombre}" in "{tipo}".</p>;
-  }
-
-  const images = product.imagenes || [product.imagen]; // Array of images, fallback to the main image
 
   const handleShare = async () => {
     const productUrl = window.location.href;
     const shareData = {
-      title: product.nombre,
-      text: `Mira este producto: ${product.nombre} - ${product.precio}$`,
+      title: data[0].nombre,
+      text: `Mira este producto: ${data[0].nombre} - ${data[0].precio}$`,
       url: productUrl,
     };
 
@@ -54,8 +67,47 @@ function ProductoDetallePage() {
     }
   };
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.correo.trim()) newErrors.correo = "El correo es requerido.";
+    if (!formData.name.trim()) newErrors.name = "Nombre o empresa es requerido.";
+    if (!formData.phone.trim()) newErrors.phone = "Teléfono es requerido.";
+    if (!formData.consulta.trim()) newErrors.consulta = "Consulta es requerida.";
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      const payload = { ...formData, header: "Consulta" };
+
+      try {
+        const response = await fetch("http://127.0.0.1:5001/contactenos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+          alert("Formulario enviado con éxito!");
+          setFormData({ correo: "", name: "", phone: "", consulta: "" });
+        } else {
+          const errorData = await response.json();
+          alert("Error al enviar: " + errorData.message);
+        }
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+        alert("Ocurrió un error al enviar el formulario.");
+      }
+    }
   };
 
   const translations = {
@@ -95,27 +147,11 @@ function ProductoDetallePage() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://127.0.0.1:5001/consulta", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!data) return <p>Product details not available for "{nombre}" in "{tipo}".</p>;
 
-      if (response.ok) {
-        setSnackbar({ open: true, message: "Consulta enviada con éxito!", severity: "success" });
-        setFormData({ correo: "", nombre: "", telefono: "", consulta: "" });
-      } else {
-        throw new Error("Error al enviar la consulta");
-      }
-    } catch (error) {
-      setSnackbar({ open: true, message: "Error al enviar consulta", severity: "error" });
-    }
-  };
+  const images = data[0].imagenes?.length > 0 ? data[0].imagenes : [defaultImage];
 
   return (
     <div className="product-detail-container">
@@ -124,118 +160,108 @@ function ProductoDetallePage() {
         {images.map((img, index) => (
           <img
             key={index}
-            src={`http://localhost:3000/tractores/${img}`}
+            src={`/tractores/${img}`}
             alt={`Thumbnail ${index + 1}`}
             onClick={() => setSelectedImage(img)}
-            style={{
-              border: selectedImage === img ? "2px solid #007bff" : "none",
-            }}
+            style={{ border: selectedImage === img ? "2px solid #007bff" : "none" }}
           />
         ))}
       </div>
 
       {/* Main Image */}
       <div className="product-image-container">
-        <img
-          src={`http://localhost:3000/tractores/${selectedImage}`}
-          alt={product.descripcion}
-        />
+        <img src={`/tractores/${selectedImage}`} alt={data[0].descripcion} />
       </div>
 
       {/* Product Details */}
       <div className="product-details">
-        <h1>{product.nombre}</h1>
-        <div
-          className="product-description"
-          dangerouslySetInnerHTML={{ __html: product.descripcion }}
-        />
-        <p className="price">{translations[language].Serie} {product.serie}</p>
-        <p className="price">{translations[language].Año} {product.año}</p>
-        <p className="price">{translations[language].Horas} {product.horas}</p>
-        <p className="price">{translations[language].Dolares} {product.precio}$</p>
-        <p className="price">{translations[language].IGV} {product.precio * product.igv}$</p>
-        <p className="price">{translations[language].Soles} {product.precio * product.venta}$</p>
+        <h1>{data[0].nombre}</h1>
+        <div className="product-description" dangerouslySetInnerHTML={{ __html: data[0].descripcion }} />
+        <p className="price">{translations[language].Serie} {data[0].serie}</p>
+        <p className="price">{translations[language].Año} {data[0].año}</p>
+        <p className="price">{translations[language].Horas} {data[0].horas}</p>
+        <p className="price">{translations[language].Dolares} {data[0].precio}$</p>
+        <p className="price">{translations[language].IGV} {data[0].precio * data[0].igv}$</p>
+        <p className="price">{translations[language].Soles} {data[0].precio * data[0].compra}$</p>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => addToCart(product)}
-        >
+        <Button variant="contained" color="secondary" onClick={() => addToCart(data[0])}>
           {translations[language].Carrito}
         </Button>
-
-        <p> </p>
-
+        <p></p>
         <Button variant="contained" color="primary" onClick={() => window.history.back()}>
-        {translations[language].Volver}
+          {translations[language].Volver}
         </Button>
-
-        <p> </p>
-
+        <p></p>
         <Button variant="contained" color="success" onClick={handleShare}>
-        {translations[language].Compartir}
+          {translations[language].Compartir}
         </Button>
       </div>
 
       {/* Inquiry Form */}
-    <div className="inquiry-form">
-      <h2>{translations[language].Consulta_producto}</h2>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          label={translations[language].Correo}
-          type="email"
-          name="correo"
-          value={formData.correo}
-          onChange={handleInputChange}
-          fullWidth
-          required
-          margin="dense"
-        />
-        <TextField
-          label={translations[language].Nombre}
-          type="text"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleInputChange}
-          fullWidth
-          required
-          margin="dense"
-        />
-        <TextField
-          label={translations[language].Telefono}
-          type="tel"
-          name="telefono"
-          value={formData.telefono}
-          onChange={handleInputChange}
-          fullWidth
-          required
-          margin="dense"
-        />
-        <TextField
-          label={translations[language].Consulta}
-          name="consulta"
-          value={formData.consulta}
-          onChange={handleInputChange}
-          fullWidth
-          required
-          multiline
-          rows={4}
-          margin="dense"
-        />
-        <Button type="submit" variant="contained" color="primary">
-        {translations[language].Enviar}
-        </Button>
-      </form>
+      
+    {/* Inquiry Form */}
+<div className="con">
+  <h1>{translations[language].Consulta_producto}</h1>
+  <form onSubmit={handleSubmit}>
+    {/* Correo (Email) */}
+    <div>
+      <label htmlFor="correo">{translations[language].Correo}</label>
+      <input
+        type="email"
+        name="correo"
+        id="correo"
+        value={formData.correo}
+        onChange={handleChange}
+        placeholder={translations[language].Correo}
+      />
+      {errors.correo && <p className="error">{errors.correo}</p>}
     </div>
 
-      {/* Snackbar Notification */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={4000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-      >
-        <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
-      </Snackbar>
+    {/* Nombre o Empresa */}
+    <div>
+      <label htmlFor="name">{translations[language].Nombre}</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder={translations[language].Nombre}
+      />
+      {errors.name && <p className="error">{errors.name}</p>}
+    </div>
+
+    {/* Teléfono */}
+    <div>
+      <label htmlFor="phone">{translations[language].Telefono}</label>
+      <input
+        type="tel"
+        name="phone"
+        id="phone"
+        value={formData.phone}
+        onChange={handleChange}
+        placeholder={translations[language].Telefono}
+      />
+      {errors.phone && <p className="error">{errors.phone}</p>}
+    </div>
+
+    {/* Consulta (Textarea) */}
+    <div>
+      <label htmlFor="consulta">{translations[language].Consulta}</label>
+      <textarea
+        rows="6"
+        name="consulta"
+        id="consulta"
+        value={formData.consulta}
+        onChange={handleChange}
+        placeholder={translations[language].Consulta}
+      />
+      {errors.consulta && <p className="error">{errors.consulta}</p>}
+    </div>
+
+    <button type="submit">{translations[language].Enviar}</button>
+  </form>
+</div>
     </div>
   );
 }

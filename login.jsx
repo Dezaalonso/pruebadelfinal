@@ -7,6 +7,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const language = (localStorage.getItem("language") || "0");
 
   // Scroll to top on render
   useEffect(() => {
@@ -22,6 +23,23 @@ function SignUp() {
     } else {
       setErrorMessage("Por favor, introduce un email válido.");
       setIsEmailValid(false);
+    }
+  };
+
+  const translations = {
+    "0": { // Spanish
+        Iniciar: "Iniciar Sesion",
+        Ingresar: "Ingresar",
+        Cuenta: "No tienes cuenta aun?",
+        Registrate : "Registrate",
+        Contrseña: "Contrseña"
+    },
+    "1": { // English
+      Iniciar: "Sign In",
+      Ingresar: "Log In",
+      Cuenta: "Dont have an account?",
+      Registrate : "Register",
+      Contrseña: "Password"
     }
   };
 
@@ -50,7 +68,6 @@ function SignUp() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Inicio de sesión exitoso!");
         console.log("Server Response:", data);
         localStorage.setItem("cotizaciones", data.cotizaciones);
         localStorage.setItem("token", data.token); 
@@ -69,7 +86,7 @@ function SignUp() {
   return (
     <div className="sign-up-container">
       <div className="sign-up-form">
-        <h2>Iniciar Sesión</h2>
+        <h2>{translations[language].Iniciar}</h2>
         <form onSubmit={handleSubmit}>
           <input
             className="inputField"
@@ -83,20 +100,20 @@ function SignUp() {
 
           <input
             className="inputField"
-            placeholder="Password"
+            placeholder={translations[language].Contrseña}
             type="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">Ingresar</button>
+          <button type="submit">{translations[language].Ingresar}</button>
         </form>
 
         <p>
-          ¿No tienes cuenta aún?{" "}
+        {translations[language].Cuenta}{" "}
           <NavLink to="/signup" className="signInPrompt">
-            Regístrate
+          {translations[language].Registrate}
           </NavLink>
         </p>
       </div>

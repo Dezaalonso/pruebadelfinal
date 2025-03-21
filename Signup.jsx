@@ -18,6 +18,7 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const language = (localStorage.getItem("language") || "0");
 
   const validate = (value) => { 
     if (validator.isStrongPassword(value, { 
@@ -35,6 +36,21 @@ function SignUp() {
   }; 
 
   const navigate = useNavigate();
+
+  const translations = {
+    "0": { // Spanish
+        Cuenta: "Ya tienes una cuenta?",
+        Inicia: "Inicia Sesión",
+        Registrate : "Registrate",
+        Contrseña: "Contrseña"
+    },
+    "1": { // English
+      Cuenta: "Already have an account?",
+      Inicia: "Log In",
+      Registrate : "Register",
+      Contrseña: "Password"
+    }
+  };
 
   // Validate email input
   const validateEmailInput = () => {
@@ -88,7 +104,7 @@ function SignUp() {
   return (
     <div className="sign-up-container">
       <div className="sign-up-form">
-        <h2>Registrarse</h2>
+        <h2>{translations[language].Registrate}</h2>
         <form onSubmit={handleSubmit}>
           <input
             id="emailInput"
@@ -104,7 +120,7 @@ function SignUp() {
 
           <input
             className="inputField"
-            placeholder="Password"
+            placeholder={translations[language].Contrseña}
             type="password"
             name="password"
             autoComplete="current-password"
@@ -115,19 +131,19 @@ function SignUp() {
           <div className="error-message">{errorMessage}</div> {/* Display error message */}
 
           <button type="button" onClick={goToNewPage} className="btn" disabled={!isEmailValid || !isPasswordValid}>
-            Registrarse
+          {translations[language].Registrate}
           </button>
         </form>
 
         <p>
-          Ya tienes una cuenta?{" "}
+        {translations[language].Cuenta}{" "}
           <NavLink
             to="/login"
             className={({ isActive }) =>
               isActive ? "signInPrompt active" : "signInPrompt"
             }
           >
-            Inicia Sesion
+           {translations[language].Inicia}
           </NavLink>
         </p>
       </div>

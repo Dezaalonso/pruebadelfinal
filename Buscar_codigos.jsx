@@ -16,6 +16,7 @@ export default function SearchPage() {
   const itemsPerPage = 10;
   const [cotizaciones, setCotizaciones] = useState(0);
   const language = (localStorage.getItem("language") || "0");
+  const token = localStorage.getItem("token");
 
   const translations = {
     "0": { // Spanish
@@ -46,6 +47,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     const storedCotizaciones = localStorage.getItem("cotizaciones");
+    window.scrollTo(0, 0);
     if (storedCotizaciones) {
       setCotizaciones(parseInt(storedCotizaciones, 10));
     }
@@ -74,39 +76,42 @@ export default function SearchPage() {
   };
 
   const handleCotizar = async (product) => {
-    if (cotizaciones <= 0) return;
-
-    const id = localStorage.getItem("id");
-    if (!id) {
-      alert("No ID found in localStorage.");
-      return;
-    }
-
+    const payload = {
+      modelo: product.modelo,
+      precio: product.vvta_us,
+    };
+  
     try {
-      const response = await fetch("http://127.0.0.1:5001/decrease_cotizacion", {
+      // Enviar cotización del producto
+      const response = await fetch("http://127.0.0.1:5001/producto_consultado", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
+        headers: { "Content-Type": "application/json", Authorization: `${token}` },
+        body: JSON.stringify(payload),
       });
-
+  
       if (!response.ok) {
-        throw new Error("Failed to update cotizaciones.");
+        throw new Error("Failed to send cotización.");
+      }
+  
+      // Llamar a la API para disminuir stock
+      const decreaseResponse = await fetch("http://127.0.0.1:5001/decrease_cotizacion", {
+        method: "GET",
+        headers: { Authorization: `${token}` },
+      });
+  
+      if (!decreaseResponse.ok) {
+        throw new Error("Failed to decrease stock.");
       }
 
-      const newCotizaciones = cotizaciones - 1;
-      setCotizaciones(newCotizaciones);
-      localStorage.setItem("cotizaciones", newCotizaciones.toString());
-
-      const storedList = localStorage.getItem("cotizacionesList");
-      const cotizacionesList = storedList ? JSON.parse(storedList) : [];
-      cotizacionesList.push(product);
-      localStorage.setItem("cotizacionesList", JSON.stringify(cotizacionesList));
-
-      alert("Producto agregado a cotización.");
-      window.location.reload(false)
+      if (decreaseResponse.ok) {
+        localStorage.setItem('cotizaciones', cotizaciones - 1);
+        window.location.reload(false);
+      }
+  
+      
     } catch (error) {
-      console.error("Error updating cotizaciones:", error);
-      alert("Error al cotizar el producto.");
+      console.error("Error:", error);
+      alert("Error al procesar la cotización del producto.");
     }
   };
 

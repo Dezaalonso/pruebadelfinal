@@ -62,7 +62,6 @@ function ProductoDetalle() {
 
   return (
     <div>
-      <h1>{tipo}</h1>
       <div className="product-detail-cards">
         {products.map((product, index) => (
           <div 

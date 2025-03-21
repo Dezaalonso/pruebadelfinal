@@ -16,9 +16,11 @@ export default function RepuestosInfo() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const language = localStorage.getItem("language") || "0";
+  const token = localStorage.getItem("token");
+  const cotizaciones = localStorage.getItem("cotizaciones");
   
   // Replace this with actual client ID if needed
-  const cod_cliente = localStorage.getItem("cod_cliente") || "12345"; 
+
 
   const translations = {
     "0": {
@@ -62,25 +64,39 @@ export default function RepuestosInfo() {
     const payload = {
       modelo: product.modelo,
       precio: product.vvta_us,
-      cod_cliente: cod_cliente,
-      fecha_creacion: new Date().toISOString().split("T")[0], // Format YYYY-MM-DD
     };
-
+  
     try {
-      const response = await fetch("http://127.0.0.1:5001/guardar_cotizacion", {
+      // Enviar cotización del producto
+      const response = await fetch("http://127.0.0.1:5001/producto_consultado", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `${token}` },
         body: JSON.stringify(payload),
       });
-
+  
       if (!response.ok) {
-        throw new Error("Failed to save cotización.");
+        throw new Error("Failed to send cotización.");
+      }
+  
+      // Llamar a la API para disminuir stock
+      const decreaseResponse = await fetch("http://127.0.0.1:5001/decrease_cotizacion", {
+        method: "GET",
+        headers: { Authorization: `${token}` },
+      });
+  
+      if (!decreaseResponse.ok) {
+        throw new Error("Failed to decrease stock.");
       }
 
-      alert("Producto agregado a cotización.");
+      if (decreaseResponse.ok) {
+        localStorage.setItem('cotizaciones', cotizaciones - 1);
+        window.location.reload(false);
+      }
+  
+      
     } catch (error) {
-      console.error("Error saving cotización:", error);
-      alert("Error al cotizar el producto.");
+      console.error("Error:", error);
+      alert("Error al procesar la cotización del producto.");
     }
   };
 

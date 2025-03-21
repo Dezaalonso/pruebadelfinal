@@ -51,7 +51,7 @@ function Producto2() {
 
   return (
     <div>
-      <h1>{translations[language].Maquinarias}</h1>
+
       <div className="cards">
         {tipos.map((tipo) => (
           <Link

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -14,6 +14,7 @@ export default function RepuestosInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
   const itemsPerPage = 10;
   const language = localStorage.getItem("language") || "0";
   const token = localStorage.getItem("token");
@@ -31,6 +32,7 @@ export default function RepuestosInfo() {
       StockN: "Stock: No Disponible",
       Cotizar: "Cotizar Producto",
       Asesor: "Contactarse con un asesor",
+      Token: "Inicia sesion para cotizar"
     },
     "1": {
       Productos: "Products and Spare Parts",
@@ -40,6 +42,7 @@ export default function RepuestosInfo() {
       StockN: "Stock: Not Available",
       Cotizar: "Make a Quote",
       Asesor: "Contact a salesperson",
+      Token: "Sign in to make a quote"
     },
   };
 
@@ -59,6 +62,11 @@ export default function RepuestosInfo() {
         setLoading(false);
       });
   }, [familiaId]);
+
+  const handleLogout = () => {
+    navigate("/login");
+    window.location.reload(false)
+  };
 
   const handleCotizar = async (product) => {
     const payload = {
@@ -114,13 +122,21 @@ export default function RepuestosInfo() {
               <Typography>{translations[language].Marca} {product.marca}</Typography>
               <Typography>{translations[language].Modelo} {product.modelo}</Typography>
               <Typography>{product.stock_f > 0 ? translations[language].StockD : translations[language].StockN}</Typography>
-              <Button
-                variant="contained"
-                color={product.vvta_us > 0 ? "primary" : "secondary"}
-                onClick={() => handleCotizar(product)}
-              >
+              {token ? (
+                <Button
+                  variant="contained"
+                  color={product.vvta_us > 0 ? "primary" : "secondary"}
+                  onClick={() => handleCotizar(product)}
+                >
                 {product.vvta_us > 0 ? translations[language].Cotizar : translations[language].Asesor}
-              </Button>
+              </Button>): 
+              (<Button
+                variant="contained"
+                color="secondary"
+                onClick={() => handleLogout()}
+              >
+              {translations[language].Token}
+            </Button>)}
             </CardContent>
           </Card>
         ))}

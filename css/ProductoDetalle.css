@@ -16,6 +16,20 @@
   cursor: pointer;
 }
 
+.product-detail-card .tractor-name {
+  min-height: 50px; /* Fixed height for uniformity */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  overflow: visible;
+  text-overflow: ellipsis;
+  white-space: normal;
+  width: 100%;
+}
+
 .product-detail-card:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);

@@ -42,9 +42,17 @@
 }
 
 .tractor-name {
-  margin: 10px 0;
-  font-size: 18px;
+  min-height: 50px; /* Fixed height for uniformity */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   font-weight: bold;
+  font-size: 1rem;
+  overflow: visible;
+  text-overflow: ellipsis;
+  white-space: normal;
+  width: 100%;
 }
 
 .tractor-price {
@@ -59,16 +67,17 @@
   width: 300px;
   margin: 0 auto;
   display: block;
+  text-align: center;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #000000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .navigate-button:hover {
-  background-color: #0056b3;
+  background-color: #414141;
 }
 
 .video-container {

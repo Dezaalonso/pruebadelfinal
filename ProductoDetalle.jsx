@@ -70,13 +70,13 @@ function ProductoDetalle() {
             onClick={() => navigate(`/detalle-producto/${tipo}/${product.cod_tractor}`, { state: { product } })}
             style={{ cursor: "pointer" }}
           >
-            <h2>{product.nombre}</h2>
+            <h2 className="tractor-name">{product.nombre }</h2>
             <img
               src={`http://localhost:3000/tractores/${product.imagen && product.imagen.trim() !== "" ? product.imagen : "blanco.jpg"}`}
               alt={product.descripcion}
               className="product-image"
             />
-            <p>{translations[language].Precio} {product.precio}</p>
+            <p>{translations[language].Precio} {product.precio}$</p>
             <Button
               variant="contained"
               color="secondary"

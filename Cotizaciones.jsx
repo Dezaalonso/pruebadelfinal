@@ -83,7 +83,7 @@ export default function Cotizaciones() {
       Excel: "Descargar en Excel"
     },
     "1": { // English
-      Cotizaciones: "My Cuotes",
+      Cotizaciones: "My Quotes",
       Descripcion: "Description",
       Marca: "Brand",
       Modelo: "Model",

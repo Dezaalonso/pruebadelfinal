@@ -7,9 +7,6 @@ function DataPage() {
   const location = useLocation();
   const formData = location.state;
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  });
 
   // State for form fields
   const [country, setCountry] = useState("");

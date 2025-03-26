@@ -24,6 +24,7 @@ export default function Cotizaciones() {
   const [exchangeRate, setExchangeRate] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [orderDetails, setOrderDetails] = useState(null);
   const navigate = useNavigate();
   const language = (localStorage.getItem("language") || "0");
 
@@ -80,7 +81,8 @@ export default function Cotizaciones() {
       Cantidad: "Cantidad",
       SubTotal: "SubTotal",
       Impuesto: "Impuesto",
-      Excel: "Descargar en Excel"
+      Excel: "Descargar en Excel",
+      Pedido: "Hacer Pedido"
     },
     "1": { // English
       Cotizaciones: "My Quotes",
@@ -91,7 +93,8 @@ export default function Cotizaciones() {
       Soles: "Price (Soles)",
       Cantidad: "Quantity",
       Impuesto: "tax",
-      Excel: "Dowload to Excel"
+      Excel: "Dowload to Excel",
+      Pedido: "Make the order"
     }
   };
 
@@ -132,6 +135,33 @@ export default function Cotizaciones() {
       alert("Error al eliminar");
     }
   };
+
+  const handleMakeOrder = () => {
+    const orderId = Math.floor(100000 + Math.random() * 900000);
+    const products = cotizaciones.map((product) => ({
+      Modelo: product.modelo,
+      Precio_Usd: product.vta_us,
+      Precio_Soles: (product.vta_us * exchangeRate).toFixed(2),
+      Cantidad: quantities[product.modelo] || 1,
+      Stock: product.stock_f,
+    }));
+
+    const totalUSD = products.reduce((sum, item) => sum + item.Precio_Usd * item.Cantidad, 0);
+    const totalSoles = totalUSD * exchangeRate;
+
+    const orderData = {
+      order_id: orderId,
+      products,
+      total: {
+        USD: totalUSD.toFixed(2),
+        igv: (totalUSD * exchangeRate).toFixed(2),
+        Soles: totalSoles.toFixed(2)
+      }
+    };
+
+    navigate("/Pedido", { state: { orderData } });
+  };
+  
 
   const handleDownloadExcel = () => {
     const data = cotizaciones.map((product) => ({
@@ -231,6 +261,10 @@ export default function Cotizaciones() {
 
           <Button variant="contained" color="primary" onClick={handleDownloadExcel}>
           {translations[language].Excel}
+          </Button>
+          <p></p>
+          <Button variant="contained" color="primary" onClick={handleMakeOrder}>
+          {translations[language].Pedido}
           </Button>
         </>
       )}

@@ -12,6 +12,7 @@ import EndBar from './EndBar';
 import ProductoDetalle from './ProductoDetalle';
 import SignUp from './Signup';
 import Datos from './Datos';
+import Pedido from './Pedido';
 import Nosotros from './Nosotros';
 import Profile from './profile';
 import ShoppingCartDrawer from './ShoppingCartDrawer'; // Import the drawer
@@ -46,7 +47,6 @@ function App() {
         <Route path="/producto/:tipo" element={<ProductoDetalle />} />
         <Route path="/repuestos/:familiaId" element={<RepuestosInfo />} />
         <Route path="/Buscar_codigos" element={<Buscar_Codigos />} />
-
         <Route
           path="/detalle-producto/:tipo/:nombre"
           element={<ProductoDetallePage />}
@@ -54,6 +54,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/Cotizaciones" element={<Cotizaciones />} />
+        <Route path="/Pedido" element={<Pedido />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/login" element={<Login />} />
         <Route path="/SignUp/Datos" element={<Datos />} />

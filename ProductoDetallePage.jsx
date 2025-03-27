@@ -154,7 +154,9 @@ function ProductoDetallePage() {
   const images = data[0].imagenes?.length > 0 ? data[0].imagenes : [defaultImage];
 
   return (
+    
     <div className="product-detail-container">
+      <h1>{data[0].nombre}</h1>
       {/* Thumbnail Gallery */}
       <div className="thumbnail-gallery">
         {images.map((img, index) => (
